@@ -14,7 +14,7 @@ class DepartmentTypeController extends Controller
      */
     public function index()
     {
-        $department_types = DepartmentType::whereNull('deleted_at')->paginate(10);
+        $department_types = DepartmentType::whereNull('deleted_at')->filter()->paginate(10);
         return view('department_types.index', compact('department_types'));
     }
 

@@ -8,7 +8,7 @@
             </a>
         </li> --}}
         <li class="nav-item {{ Route::is('news.index') || Route::is('news.create')
-            || Route::is('news.edit') ? 'active' : '' }}">
+            || Route::is('news.edit') || Route::is('news.show') ? 'active' : '' }}">
             <a class="nav-link" href="{{ route('news.index') }}">
                 <i class="icon-grid menu-icon"></i>
                 <span class="menu-title">News</span>
