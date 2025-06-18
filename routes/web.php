@@ -33,6 +33,10 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'),'verified',]
     // category types
     Route::resource('department-types', App\Http\Controllers\DepartmentTypeController::class);
 
+    // profile
+    Route::view('/profile', 'profile.show')->name('profile.show');
+    Route::view('/profile/edit', 'profile.edit')->name('profile.edit');
+
 
 
     Route::get('/events', function () {

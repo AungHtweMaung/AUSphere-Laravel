@@ -24376,8 +24376,11 @@ table.dataTable tbody td.select-checkbox:after {
     display: none;
   }
 }
+
+/* when click nav menu bar to hide sidebar, use margin not to hide by navtext */
 .sidebar-icon-only .navbar .navbar-menu-wrapper .navbar-toggler:not(.navbar-toggler-right) {
   transform: rotate(180deg);
+  margin-left: 70px;
 }
 @media (max-width: 991px) {
   .navbar .navbar-menu-wrapper .navbar-toggler.navbar-toggler-right {

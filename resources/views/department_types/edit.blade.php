@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.app', ['elementActive' => 'department-types'])
 @section('content')
 <div class="row">
     <div class="col-md-12">

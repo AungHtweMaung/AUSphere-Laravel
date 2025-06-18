@@ -2,7 +2,9 @@
     use Illuminate\Support\Str;
 @endphp
 
-@extends('layouts.app')
+@extends('layouts.app', [
+    'elementActive' => 'news'
+    ])
 @section('content')
 <div class="row">
     <div class="col-md-12">
