@@ -30,17 +30,18 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'),'verified',]
     Route::put('/news/update/{news}', [App\Http\Controllers\NewsController::class, 'update'])->name('news.update');
     Route::delete('/news/delete/{news}', [App\Http\Controllers\NewsController::class, 'destroy'])->name('news.destroy');
 
-    // category types
-    Route::resource('department-types', App\Http\Controllers\DepartmentTypeController::class);
+    // events
+    Route::resource('/events', App\Http\Controllers\EventController::class);
+
+
+    // department types
+    Route::resource('/department-types', App\Http\Controllers\DepartmentTypeController::class);
+
+    // department
+    Route::resource('/departments', App\Http\Controllers\DepartmentController::class);
 
     // profile
     Route::view('/profile', 'profile.show')->name('profile.show');
     Route::view('/profile/edit', 'profile.edit')->name('profile.edit');
-
-
-
-    Route::get('/events', function () {
-        return view('events.index');
-    })->name('events.index');
 
 });

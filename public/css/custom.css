@@ -1,3 +1,22 @@
+
+/* custom scrollbar  */
+html::-webkit-scrollbar {
+    width: 0.6em;
+    background: #4B49AC; /* Add a background for the track */
+}
+html::-webkit-scrollbar-thumb {
+    background: #4B49AC;
+    border-radius: 10px;
+}
+html::-webkit-scrollbar-thumb:hover {
+    background: #4B49AC;
+}
+
+html {
+    scrollbar-width: thin;
+    scrollbar-color: #4B49AC #f1f1f1; /* thumb color, track color */
+}
+
 /* start loading spinner  */
 .loader-container {
     display: none;
@@ -75,8 +94,22 @@
   100% { transform: scale(0.9) }
 }
 
-
 /* end loading spinner */
+
+
+/* for select 2 */
+.select2-container {
+    width: 100% !important;
+}
+.select2-container .select2-selection--single {
+    width: 100% !important;
+    height: 43px;
+}
+.select2-container .select2-selection--multiple {
+    width: 100% !important;
+    height: 43px;
+}
+
 
 
 

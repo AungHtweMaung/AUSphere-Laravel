@@ -17,9 +17,11 @@
     {{-- summer note css  --}}
     <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.20/dist/summernote-lite.min.css" rel="stylesheet">
 
+    {{-- select2 --}}
+    <link rel="stylesheet" href="{{ asset('src/assets/css/select2.min.css') }}">
 
-    <!-- endinject -->
-    {{-- <link rel="shortcut icon" href="{{ asset('src/assets/images/favicon.png') }}" /> --}}
+    {{-- date time flatpickr  --}}
+    <link rel="stylesheet" href="{{ asset('src/assets/css/flatpickr.min.css') }}">
 
     {{-- <script src="https://js.pusher.com/8.4.0/pusher.min.js"></script> --}}
 
@@ -81,6 +83,13 @@
     <!-- Summernote Bootstrap 5 compatible version by community-->
 
     <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.20/dist/summernote-lite.min.js"></script>
+
+    {{-- select 2 --}}
+    <script src="{{ asset('src/assets/js/select2.min.js') }}"></script>
+
+    {{-- date time flatpickr  --}}
+    <script src="{{ asset('src/assets/js/flatpickr.js') }}"></script>
+
 
     @include('layouts.sweetalert-message')
     {{-- <script src="{{ asset('src/assets/js/pusher.js') }}"></script> --}}

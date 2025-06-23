@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('departments', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('category_type_id');
-            $table->string('title_short_term');
+            $table->unsignedBigInteger('department_type_id');
+            $table->string('title_short_term')->nullable();
             $table->string('title');
             $table->text('content');
             $table->string('image')->nullable();

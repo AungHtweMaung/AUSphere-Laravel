@@ -8,17 +8,24 @@
             </a>
         </li>
 
-        {{-- <li class="nav-item {{ (isset($elementActive) && $elementActive == 'events') ? 'active' : '' }} }}">
+        <li class="nav-item {{ (isset($elementActive) && $elementActive == 'events') ? 'active' : '' }} }}">
             <a class="nav-link" href="{{ route('events.index') }}">
                 <i class="icon-grid menu-icon"></i>
                 <span class="menu-title">Events</span>
             </a>
-        </li> --}}
+        </li>
 
         <li class="nav-item {{ isset($elementActive) && $elementActive == 'department-types' ? 'active': '' }}">
             <a class="nav-link" href="{{ route('department-types.index') }}">
                 <i class="icon-grid menu-icon"></i>
                 <span class="menu-title">Department Types</span>
+            </a>
+        </li>
+
+        <li class="nav-item {{ isset($elementActive) && $elementActive == 'departments' ? 'active': '' }}">
+            <a class="nav-link" href="{{ route('departments.index') }}">
+                <i class="icon-grid menu-icon"></i>
+                <span class="menu-title">Departments</span>
             </a>
         </li>
 
