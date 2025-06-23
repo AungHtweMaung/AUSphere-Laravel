@@ -23990,7 +23990,9 @@ table.dataTable tbody td.select-checkbox:after {
 .main-panel {
   transition: width 0.25s ease, margin 0.25s ease;
   width: calc(100% - 235px);
-  min-height: calc(100vh - 60px);
+  max-height: calc(100vh - 60px);
+  position: sticky;
+  overflow-y: scroll;
   display: -webkit-flex;
   display: flex;
   -webkit-flex-direction: column;
@@ -24018,7 +24020,9 @@ table.dataTable tbody td.select-checkbox:after {
 
 /* Sidebar */
 .sidebar {
-  min-height: calc(100vh - 60px);
+  max-height: calc(100vh - 60px);
+  position: sticky;
+  overflow-y: scroll;
   background: #fff;
   font-family: "Nunito", sans-serif;
   font-weight: 500;

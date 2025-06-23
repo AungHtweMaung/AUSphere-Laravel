@@ -71,7 +71,7 @@
             </li>
             <li class="nav-item nav-profile dropdown">
                 <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" id="profileDropdown">
-                    <img src="{{ asset('src/assets/images/default-image.svg') }}" alt="profile" />
+                    <img src="{{ asset('src/assets/images/default-user-image.svg') }}" alt="profile" />
                     {{-- <img src="{{ asset('storage/'.  $LoggedUserInfo->picture) }}" alt="profile" /> --}}
                 </a>
                 <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">

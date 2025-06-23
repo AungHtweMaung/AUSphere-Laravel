@@ -12,7 +12,7 @@
             <div class="card-body">
                 {{-- @dd(route('news.create')) --}}
                 <a href="{{ route('department-types.create') }}" class="btn btn-primary">Create</a>
-                <h2 class="text-center">Department Types</h2>
+                <h2 class="text-center mt-3">Department Types</h2>
                 <div class="table-responsive">
                     <table class="table table-striped">
                     <thead>

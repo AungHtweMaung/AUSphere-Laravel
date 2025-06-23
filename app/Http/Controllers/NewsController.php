@@ -63,7 +63,7 @@ class NewsController extends Controller
                 $data['image'] = $imagePath;
             }
 
-            $data['user_id'] = auth()->id(); // Assuming you want to set the user_id to the authenticated user
+            $data['user_id'] = auth()->user()->id; // Assuming you want to set the user_id to the authenticated user
             News::create($data);
             DB::commit();
             return response()->json([

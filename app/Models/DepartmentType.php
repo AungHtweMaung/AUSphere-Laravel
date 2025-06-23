@@ -14,4 +14,10 @@ class DepartmentType extends Model
     use HasFactory, SoftDeletes, DepartmentTypeTrait;
 
     protected $fillable = ['name'];
+
+    public function departments()
+    {
+        return $this->hasMany(Department::class, 'department_type_id', 'id');
+    }
+
 }

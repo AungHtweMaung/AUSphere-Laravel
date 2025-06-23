@@ -2,6 +2,23 @@
 
 
 $(document).ready(function () {
+    // for select2
+    $('select').select2();
+
+    // flatpickr date time
+    $(".date-picker").flatpickr();
+
+    $('.time-picker').flatpickr({
+        enableTime: true,
+        noCalendar: true,
+        dateFormat: "h:i K",
+        allowInput: true,
+    });
+
+
+
+
+
     // store, update form submit
     $('.form-submit').submit(function (e) {
         e.preventDefault();
@@ -102,6 +119,7 @@ $(document).ready(function () {
                         $('.loader-container').hide();
                     },
                     success: function(response) {
+
                         if (response.success) {
                             Swal.fire({
                                 title: 'Success',
