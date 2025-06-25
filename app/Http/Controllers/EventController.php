@@ -9,6 +9,7 @@ use App\Http\Requests\EventRequest;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 
+
 class EventController extends Controller
 {
     /**
@@ -16,7 +17,8 @@ class EventController extends Controller
      */
     public function index()
     {
-        $events = Event::whereNull('deleted_at')->paginate(10);
+        $events = Event::whereNull('deleted_at')
+            ->filter()->paginate(10);
         return view('events.index', compact('events'));
     }
 
@@ -59,7 +61,7 @@ class EventController extends Controller
      */
     public function show(Event $event)
     {
-        return view('events.show');
+        return view('events.show', compact('event'));
     }
 
     /**
@@ -73,16 +75,53 @@ class EventController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(EventRequest $request, Event $event)
     {
-        //
+        $data = $request->validated();
+        // Handle image replacement
+        try {
+            if ($request->hasFile('image')) {
+            // Delete the old image if it exists
+                (new FileService())->deleteImage($event->image ?? '');
+                $imagePath = (new FileService())->storeImage($request->image, 'events');
+                $data['image'] = $imagePath;
+            }
+
+            // Handle start_time and end_time, allowing them to be null
+            // store time as hour min second fromat
+            $data['date'] = $request->date ?? null;
+            $data['start_time'] = $request->start_time ? Carbon::parse($request->start_time)->format('H:i:s') : null;
+            $data['end_time'] = $request->end_time ? Carbon::parse($request->end_time)->format('H:i:s') : null;
+            $data['location'] = $request->location ?? null;
+
+            $event->update($data);
+
+            return response()->json([
+                'success' => 'Event Updated Successfully',
+                'redirectUrl' => route('events.index')
+            ]);
+        }
+        catch (\Exception $e) {
+            logger($e->getMessage());
+            return response()->json([
+                'error' => 'Failed to update event',
+            ]);
+        }
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Event $event)
     {
+        if ($event->image) {
+            (new FileService())->deleteImage($event->image);
+        }
+        $event->delete();
 
+        return response()->json([
+            'success' => 'Department Deleted Successfully.',
+            'redirectUrl' => route('departments.index')
+        ]);
     }
 }

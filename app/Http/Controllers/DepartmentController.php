@@ -104,4 +104,6 @@ class DepartmentController extends Controller
             'redirectUrl' => route('departments.index')
         ]);
     }
+
+    
 }

@@ -7,7 +7,7 @@
             <h2>error</h2>
             <p>We couldn't find what you're looking for. Please check the URL and try again.</p>
             <p class="subtitle">ERR_NOT_FOUND</p>
-            <a href="{{ route('news.index') }}">Go Home</a>
+            <a href="{{ route('news.admin-index') }}">Go Home</a>
         </div>
         <div class="stack-container">
             <div class="card-container">

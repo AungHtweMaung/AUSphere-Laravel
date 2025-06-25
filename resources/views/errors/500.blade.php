@@ -7,7 +7,7 @@
             <h2>error</h2>
             <p>Oh no, something went wrong. Please try again later. If the problem persists, please contact the administrator.</p>
             <p class="subtitle">ERR_INTERNAL_SERVER_ERROR</p>
-            <a href="{{ route('news.index') }}">Go Home</a>
+            <a href="{{ route('news.admin-index') }}">Go Home</a>
         </div>
         <div class="stack-container">
             <div class="card-container">
