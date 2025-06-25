@@ -2,7 +2,7 @@
 <nav class="sidebar sidebar-offcanvas" id="sidebar">
     <ul class="nav">
         <li class="nav-item {{ (isset($elementActive) && $elementActive == 'news') ? 'active' : '' }}">
-            <a class="nav-link" href="{{ route('news.index') }}">
+            <a class="nav-link" href="{{ route('news.admin-index') }}">
                 <i class="icon-grid menu-icon"></i>
                 <span class="menu-title">News</span>
             </a>

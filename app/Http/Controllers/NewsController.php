@@ -18,7 +18,7 @@ class NewsController extends Controller
      */
     public function index()
     {
-        $news = News::whereNull('deleted_at')->filter()->paginate(10);
+        $news = News::whereNull('deleted_at')->filter()->paginate(5);
         return view('news.index', compact('news'));
     }
 
@@ -68,7 +68,7 @@ class NewsController extends Controller
             DB::commit();
             return response()->json([
                 'success'=>'News Created Successfully',
-                'redirectUrl' => route('news.index')
+                'redirectUrl' => route('news.admin-index')
             ]);
         } catch(\Exception $e){
             DB::rollBack();
@@ -109,7 +109,7 @@ class NewsController extends Controller
             DB::commit();
             return response()->json([
                 'success'=>'News Updated Successfully',
-                'redirectUrl' => route('news.index')
+                'redirectUrl' => route('news.admin-index')
             ]);
         } catch(\Exception $e){
             DB::rollBack();

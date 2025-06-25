@@ -20,7 +20,7 @@
                         </div>
                     </div>
                 </div>
-                <a href="{{ route('news.index') }}" class="btn btn-dark">Back</a>
+                <a href="{{ route('news.admin-index') }}" class="btn btn-dark">Back</a>
             </div>
         </div>
     </div>

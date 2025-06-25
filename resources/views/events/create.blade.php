@@ -49,7 +49,7 @@
                         </div>
                     </div>
                     <div class="text-end">
-                        <a href="{{route('news.index')}}" class="btn btn-dark">Back</a>
+                        <a href="{{route('news.admin-index')}}" class="btn btn-dark">Back</a>
 
                         <button type="submit" class="btn btn-primary">Create</button>
                     </div>

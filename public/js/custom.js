@@ -6,7 +6,9 @@ $(document).ready(function () {
     $('select').select2();
 
     // flatpickr date time
-    $(".date-picker").flatpickr();
+    $(".date-picker").flatpickr({
+        allowInput: true,
+    });
 
     $('.time-picker').flatpickr({
         enableTime: true,

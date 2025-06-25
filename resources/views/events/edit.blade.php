@@ -39,7 +39,7 @@
                     </div>
                     <div class="form-group">
                         <label for="date">Date</label>
-                        <input type="date" class="form-control date-picker" id="date" name="date" placeholder="Select date..." value="{{ $event->date ? $event->date->format('Y-m-d') : '' }}">
+                        <input type="date" class="form-control date-picker" id="date" name="date" placeholder="Select date..." value="{{ $event->date }}">
                         <div class="invalid-feedback" data-error-for="date"></div>
                     </div>
                     <div class="row">
@@ -56,7 +56,7 @@
                     </div>
                     </div>
                     <div class="text-end">
-                        <a href="{{route('news.index')}}" class="btn btn-dark">Back</a>
+                        <a href="{{route('events.index')}}" class="btn btn-dark">Back</a>
 
                         <button type="submit" class="btn btn-primary">Create</button>
                     </div>

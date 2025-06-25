@@ -3,17 +3,17 @@
 @endphp
 
 @extends('layouts.app', [
-    'elementActive' => 'events'
+    'elementActive' => 'news'
     ])
 @section('content')
 <div class="row">
     <div class="col-md-12">
-        @include('filters.events-filter')
+        @include('filters.news-filter')
         <div class="card">
             <div class="card-body">
-                {{-- @dd(route('events.create')) --}}
-                <a href="{{ route('events.create') }}" class="btn btn-primary">Create</a>
-                <h2 class="text-center mt-3">Event List</h2>
+                {{-- @dd(route('news.create')) --}}
+                <a href="{{ route('news.create') }}" class="btn btn-primary">Create</a>
+                <h2 class="text-center mt-3">News List</h2>
                 <div class="table-responsive">
                     <table class="table table-striped">
                     <thead>
@@ -27,9 +27,9 @@
                     </thead>
                     <tbody>
                         @php
-                            $num = ($events->currentPage() - 1) * $events->perPage() + 1;
+                            $num = ($news->currentPage() - 1) * $news->perPage() + 1;
                         @endphp
-                        @foreach($events as $item)
+                        @foreach($news as $item)
                         <tr>
                             <td>{{ $num }}</td>
                             <td >{{ Str::limit($item->title, 50, '...') }}</td>
@@ -42,13 +42,13 @@
                                 @endif
                             </td>
                             <td>
-                                <a href="{{ route('events.show', $item->id) }}" class="btn btn-warning btn-sm text-white">
+                                <a href="{{ route('news.show', $item->id) }}" class="btn btn-warning btn-sm text-white">
                                     <i class="fa fa-eye"></i>
                                 </a>
-                                <a href="{{ route('events.edit', $item->id) }}" class="btn btn-primary btn-sm text-white">
+                                <a href="{{ route('news.edit', $item->id) }}" class="btn btn-primary btn-sm text-white">
                                     <i class="fa fa-edit"></i>
                                 </a>
-                                <button data-href="{{ route('events.destroy', $item->id) }}" class="btn btn-danger btn-sm text-white delete-data">
+                                <button data-href="{{ route('news.destroy', $item->id) }}" class="btn btn-danger btn-sm text-white delete-data">
                                     <i class="fa fa-trash"></i>
                                 </button>
                             </td>
@@ -62,7 +62,7 @@
                         <tr>
                             <td >
                                 <div class="d-flex justify-content-center">
-                                    {{ $events->links() }}
+                                    {{ $news->links() }}
                                 </div>
                             </td>
                         </tr>

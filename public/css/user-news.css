@@ -1,0 +1,11 @@
+/* news card hover effect */
+.news-card {
+    transition: transform 1s;
+    height: 100%;
+}
+
+.news-card:hover {
+    transform: scale(1.03);
+    /* background-color: black; */
+    border: 2px solid var(--bs-primary);
+}

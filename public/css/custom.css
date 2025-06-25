@@ -17,6 +17,10 @@ html {
     scrollbar-color: #4B49AC #f1f1f1; /* thumb color, track color */
 }
 
+a {
+    text-decoration: none;
+}
+
 /* start loading spinner  */
 .loader-container {
     display: none;
