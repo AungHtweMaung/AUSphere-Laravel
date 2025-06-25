@@ -14,7 +14,7 @@
                         <h2 class="d-inline-block">{{ $news->title }}</h2>
                         <span class="fw-bold fst-italic">( {{ $news->created_at->format('d-M-Y') }} )</span>
 
-                        <div class="card-text">
+                        <div class="card-text" style="text-align: justify !important;">
 
                             {!! $news->content !!}
                         </div>

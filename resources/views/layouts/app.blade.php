@@ -9,9 +9,11 @@
     <title>AUSphere</title>
     <!-- plugins:css -->
     <link rel="stylesheet" href="{{ asset('src/assets/vendors/feather/feather.css') }}">
-    <link rel="stylesheet" href="{{ asset('src/assets/vendors/ti-icons/css/themify-icons.css') }}">
+    {{-- <link rel="stylesheet" href="{{ asset('src/assets/vendors/ti-icons/css/themify-icons.css') }}"> --}}
     <link rel="stylesheet" href="{{ asset('src/assets/vendors/css/vendor.bundle.base.css') }}">
-    <link rel="stylesheet" href="{{ asset('src/assets/vendors/font-awesome/css/font-awesome.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('src/assets/vendors/fontawesome-free-6.7.2-web/css/fontawesome.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('src/assets/vendors/fontawesome-free-6.7.2-web/css/solid.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('src/assets/vendors/fontawesome-free-6.7.2-web/css/regular.min.css') }}">
     {{-- <link rel="stylesheet" href="{{ asset('src/assets/vendors/mdi/css/materialdesignicons.min.css') }}"> --}}
 
     {{-- summer note css  --}}

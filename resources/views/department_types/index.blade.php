@@ -32,10 +32,10 @@
                             <td >{{ Str::limit($department_type->name, 100, '...') }}</td>
                             <td>
                                 <a href="{{ route('department-types.edit', $department_type->id) }}" class="btn btn-primary btn-sm text-white">
-                                    <i class="fa fa-edit"></i>
+                                    <i class="fa-regular fa-edit"></i>
                                 </a>
                                 <button data-href="{{ route('department-types.destroy', $department_type->id) }}" class="btn btn-danger btn-sm text-white delete-data">
-                                    <i class="fa fa-trash"></i>
+                                    <i class="fa-regular fa-trash-can"></i>
                                 </button>
                             </td>
                         </tr>

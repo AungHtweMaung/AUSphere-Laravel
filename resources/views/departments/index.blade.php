@@ -36,13 +36,13 @@
                             <td >{{ Str::limit($department->title, 100, '...') }}</td>
                             <td>
                                 <a href="{{ route('departments.show', $department->id) }}" class="btn btn-warning btn-sm text-white">
-                                    <i class="fa fa-eye"></i>
+                                    <i class="fa-regular fa-eye"></i>
                                 </a>
                                 <a href="{{ route('departments.edit', $department->id) }}" class="btn btn-primary btn-sm text-white">
-                                    <i class="fa fa-edit"></i>
+                                    <i class="fa-regular fa-edit"></i>
                                 </a>
                                 <button data-href="{{ route('departments.destroy', $department->id) }}" class="btn btn-danger btn-sm text-white delete-data">
-                                    <i class="fa fa-trash"></i>
+                                    <i class="fa-regular fa-trash-can"></i>
                                 </button>
                             </td>
                         </tr>

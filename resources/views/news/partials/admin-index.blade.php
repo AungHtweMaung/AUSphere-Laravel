@@ -43,13 +43,13 @@
                             </td>
                             <td>
                                 <a href="{{ route('news.show', $item->id) }}" class="btn btn-warning btn-sm text-white">
-                                    <i class="fa fa-eye"></i>
+                                    <i class="fa-regular fa-eye"></i>
                                 </a>
                                 <a href="{{ route('news.edit', $item->id) }}" class="btn btn-primary btn-sm text-white">
-                                    <i class="fa fa-edit"></i>
+                                    <i class="fa-regular fa-pen-to-square"></i>
                                 </a>
                                 <button data-href="{{ route('news.destroy', $item->id) }}" class="btn btn-danger btn-sm text-white delete-data">
-                                    <i class="fa fa-trash"></i>
+                                    <i class="fa-solid fa-trash-can"></i>
                                 </button>
                             </td>
                         </tr>

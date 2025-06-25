@@ -3,14 +3,15 @@
     <ul class="nav">
         <li class="nav-item {{ (isset($elementActive) && $elementActive == 'news') ? 'active' : '' }}">
             <a class="nav-link" href="{{ route('news.admin-index') }}">
-                <i class="icon-grid menu-icon"></i>
+                {{-- <i class="icon-grid menu-icon"></i> --}}
+                <i class="fa-regular fa-newspaper fa-2x menu-icon"></i>
                 <span class="menu-title">News</span>
             </a>
         </li>
 
         <li class="nav-item {{ (isset($elementActive) && $elementActive == 'events') ? 'active' : '' }} }}">
             <a class="nav-link" href="{{ route('events.index') }}">
-                <i class="icon-grid menu-icon"></i>
+                <i class="fa-regular fa-calendar menu-icon"></i>
                 <span class="menu-title">Events</span>
             </a>
         </li>
@@ -24,7 +25,7 @@
 
         <li class="nav-item {{ isset($elementActive) && $elementActive == 'departments' ? 'active': '' }}">
             <a class="nav-link" href="{{ route('departments.index') }}">
-                <i class="icon-grid menu-icon"></i>
+                <i class="fa-regular fa-building menu-icon"></i>
                 <span class="menu-title">Departments</span>
             </a>
         </li>

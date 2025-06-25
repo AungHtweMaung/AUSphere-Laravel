@@ -18,7 +18,7 @@ class NewsController extends Controller
      */
     public function index()
     {
-        $news = News::whereNull('deleted_at')->filter()->paginate(5);
+        $news = News::whereNull('deleted_at')->filter()->paginate(4);
         return view('news.index', compact('news'));
     }
 
