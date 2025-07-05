@@ -74,6 +74,7 @@ $(document).ready(function () {
                     allowOutsideClick: false, // optional: prevent closing by clicking outside
                     allowEscapeKey: false
                 }).then((result) => {
+                    console.log(result);
                     if (result.isConfirmed) {
                         // Reset Summernote content if present in the form
                         if (response.redirectUrl) {

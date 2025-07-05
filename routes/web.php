@@ -43,9 +43,21 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'),'verified',]
         // department
         Route::resource('/departments', App\Http\Controllers\DepartmentController::class);
 
+        // profiles
+        Route::get('/profiles/{profile}', [App\Http\Controllers\ProfileController::class, 'show'])->name('profiles.show');
+        Route::put('/profiles/update', [App\Http\Controllers\ProfileController::class, 'update'])->name('profiles.update');
+
+
+        // social posts
+        Route::get('/users/{user}/social-posts', [App\Http\Controllers\SocialPostController::class, 'index'])->name('social-posts.index');
+        Route::get('/users/{user}/social-posts/create', [App\Http\Controllers\SocialPostController::class, 'create'])->name('social-posts.create');
+        Route::post('/users/{user}/social-posts', [App\Http\Controllers\SocialPostController::class, 'store'])->name('social-posts.store');
+        Route::delete('/users/{user}/social-posts/{post}', [App\Http\Controllers\SocialPostController::class, 'destroy'])->name('social-posts.destroy');
+
+
         // profile
-        Route::view('/profile', 'profile.show')->name('profile.show');
-        Route::view('/profile/edit', 'profile.edit')->name('profile.edit');
+        // Route::view('/campus-information', 'campus-information.show')->name('campus-information.show');
+        // Route::view('/campus-information/edit', 'campus-information.edit')->name('campus-information.edit');
     // });
 
     // Route::prefix('user')->group(function () {

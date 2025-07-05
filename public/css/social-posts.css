@@ -1,0 +1,19 @@
+.social-posts-menu {
+    border: 1px solid #000;
+    width: 75px;
+}
+
+.social-posts-menu:hover {
+    cursor: pointer;
+    border: 2px solid #4B49AC;
+
+}
+
+.social-posts-menu.dropdown::after,
+.social-posts-menu.dropdown .dropdown-toggle::after
+{
+    display: none !important;
+    content: none;
+}
+
+

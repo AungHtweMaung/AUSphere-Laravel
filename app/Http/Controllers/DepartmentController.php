@@ -42,7 +42,7 @@ class DepartmentController extends Controller
         } else {
             $data['image'] = null;
         }
-
+        $data['title_short_term'] = $request->title_short_term;
         Department::create($data);
 
         return response()->json([
@@ -81,6 +81,8 @@ class DepartmentController extends Controller
             $data['image'] = $imagePath;
         }
 
+        $data['title_short_term'] = $request->title_short_term;
+
         $department->update($data);
 
         return response()->json([
@@ -105,5 +107,5 @@ class DepartmentController extends Controller
         ]);
     }
 
-    
+
 }
