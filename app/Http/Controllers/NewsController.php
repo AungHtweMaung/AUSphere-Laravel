@@ -68,7 +68,7 @@ class NewsController extends Controller
             DB::commit();
             return response()->json([
                 'success'=>'News Created Successfully',
-                'redirectUrl' => route('news.admin-index')
+                'redirectUrl' => route('news.index')
             ]);
         } catch(\Exception $e){
             DB::rollBack();
@@ -109,7 +109,7 @@ class NewsController extends Controller
             DB::commit();
             return response()->json([
                 'success'=>'News Updated Successfully',
-                'redirectUrl' => route('news.admin-index')
+                'redirectUrl' => route('news.index')
             ]);
         } catch(\Exception $e){
             DB::rollBack();

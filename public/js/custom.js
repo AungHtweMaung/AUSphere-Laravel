@@ -6,6 +6,18 @@ $(document).ready(function () {
     $('select').select2();
 
     // flatpickr date time
+    $('.month-year-picker').flatpickr({
+        // dateFormat: "Y-m",     // Format: 2025-06
+        plugins: [
+            new monthSelectPlugin({
+                shorthand: true, //defaults to false
+                dateFormat: "M Y", //defaults to "F Y"
+                altFormat: "F Y", //defaults to "F Y"
+                // theme: "dark" // defaults to "light"
+            })
+        ]
+    });
+
     $(".date-picker").flatpickr({
         allowInput: true,
     });
@@ -16,6 +28,8 @@ $(document).ready(function () {
         dateFormat: "h:i K",
         allowInput: true,
     });
+
+
 
 
 

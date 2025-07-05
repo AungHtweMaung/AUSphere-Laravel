@@ -4,11 +4,11 @@
             <div class="row justify-content-end">
                 <div class="col-md-4 mb-2">
                     <label for="searchStartDate">Start Date</label>
-                    <input type="date" value="{{ request('searchStartDate') }}" class="form-control form-control-sm date-picker" id="searchStartDate" name="searchStartDate" placeholder="Start date">
+                    <input type="text" value="{{ request('searchStartDate') }}" class="form-control form-control-sm month-year-picker" id="searchStartDate" name="searchStartDate" placeholder="Start date">
                 </div>
                 <div class="col-md-4 mb-2">
                     <label for="searchEndDate">End Date</label>
-                    <input type="date" value="{{ request('searchEndDate') }}" class="form-control form-control-sm date-picker" id="searchEndDate" name="searchEndDate" placeholder="End date">
+                    <input type="text" value="{{ request('searchEndDate') }}" class="form-control form-control-sm month-year-picker" id="searchEndDate" name="searchEndDate" placeholder="End date">
                 </div>
                 <div class="col-md-4 mb-2">
                     <div class="">

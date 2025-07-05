@@ -24,6 +24,7 @@
 
     {{-- date time flatpickr  --}}
     <link rel="stylesheet" href="{{ asset('src/assets/css/flatpickr.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('src/assets/css/flatpickr-month-year.css') }}">
 
     {{-- <script src="https://js.pusher.com/8.4.0/pusher.min.js"></script> --}}
 
@@ -91,6 +92,7 @@
 
     {{-- date time flatpickr  --}}
     <script src="{{ asset('src/assets/js/flatpickr.js') }}"></script>
+    <script src="{{ asset('src/assets/js/flatpickr-month-year.js') }}"></script>
 
 
     @include('layouts.sweetalert-message')

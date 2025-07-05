@@ -19,6 +19,7 @@ class EventController extends Controller
     {
         $events = Event::whereNull('deleted_at')
             ->filter()->paginate(10);
+        // dd($events);
         return view('events.index', compact('events'));
     }
 
@@ -45,7 +46,8 @@ class EventController extends Controller
         $data['start_time'] = $request->start_time ? Carbon::parse($request->start_time)->format('H:i:s') : null;
         $data['end_time'] = $request->end_time ? Carbon::parse($request->end_time)->format('H:i:s') : null;
         $data['user_id'] = auth()->user()->id;
-        $data['location'] = $request->location ?? null;
+        $data['date'] = $request->date;
+        $data['location'] = $request->location;
 
         Event::create($data);
 

@@ -58,7 +58,7 @@
                     <div class="text-end">
                         <a href="{{route('events.index')}}" class="btn btn-dark">Back</a>
 
-                        <button type="submit" class="btn btn-primary">Create</button>
+                        <button type="submit" class="btn btn-primary">Update</button>
                     </div>
                 </form>
             </div>
