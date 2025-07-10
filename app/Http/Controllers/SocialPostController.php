@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\SocialPost;
 use Illuminate\Http\Request;
 use App\Http\Requests\SocialPostRequest;
 
@@ -19,23 +20,32 @@ class SocialPostController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(User $user, SocialPost $social_post = null)
     {
-        $user = auth()->user();
+        $social_post = $social_post ?: new SocialPost();
+        $button = $social_post ? 'Update': 'Create';
+        // dd($social_post);
         // This method can be used to show a form for creating a new social post
-        return view('social-posts.create', compact('user'));
+        return view('social-posts.create', compact('user', 'social_post', 'button'));
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(SocialPostRequest $request, User $user)
+    public function store(SocialPostRequest $request, User $user, SocialPost $social_post = null)
     {
         $data = $request->validated();
-        $post = $user->socialPosts()->create($data);
+
+        if ($social_post) {
+            $social_post->update($data);
+            $message = 'Post updated successfully.';
+        } else {
+            $social_post = $user->socialPosts()->create($data);
+            $message = 'Post created successfully.';
+        }
 
         return response()->json([
-            'success' => 'Post created successfully.',
+            'success' => $message,
             'redirectUrl' => route('profiles.show', $user->id)
         ]);
     }
@@ -43,10 +53,18 @@ class SocialPostController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(User $user, SocialPost $social_post)
     {
-        //
+        $social_post->load([
+            'comments.user:id,name',
+            'comments'
+        ]);
+
+        // dd($social_post->comments);
+        // This method can be used to show a specific social post
+        return view('social-posts.show', compact('user', 'social_post'));
     }
+
 
     /**
      * Show the form for editing the specified resource.
@@ -67,10 +85,10 @@ class SocialPostController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(User $user, $post_id)
+    public function destroy(User $user, $social_post)
     {
         try {
-            $post = $user->socialPosts()->findOrFail($post_id);
+            $post = $user->socialPosts()->findOrFail($social_post);
             $post->delete();
 
             return response()->json([

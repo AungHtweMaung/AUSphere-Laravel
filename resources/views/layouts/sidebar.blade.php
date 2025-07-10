@@ -32,7 +32,7 @@
 
         <li class="nav-item {{ isset($elementActive) && $elementActive == 'profiles' ? 'active': '' }}">
             <a class="nav-link" href="{{ route('profiles.show', auth()->user()->id) }}">
-                <i class="fa-regular fa-building menu-icon"></i>
+                <i class="fa-regular fa-user menu-icon"></i>
                 <span class="menu-title">Profile</span>
             </a>
         </li>

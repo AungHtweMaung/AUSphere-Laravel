@@ -49,10 +49,18 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'),'verified',]
 
 
         // social posts
+        Route::get('/users/{user}/social-posts/create/{social_post?}', [App\Http\Controllers\SocialPostController::class, 'create'])->name('social-posts.create');
         Route::get('/users/{user}/social-posts', [App\Http\Controllers\SocialPostController::class, 'index'])->name('social-posts.index');
-        Route::get('/users/{user}/social-posts/create', [App\Http\Controllers\SocialPostController::class, 'create'])->name('social-posts.create');
-        Route::post('/users/{user}/social-posts', [App\Http\Controllers\SocialPostController::class, 'store'])->name('social-posts.store');
-        Route::delete('/users/{user}/social-posts/{post}', [App\Http\Controllers\SocialPostController::class, 'destroy'])->name('social-posts.destroy');
+        Route::get('/social-posts/{social_post}', [App\Http\Controllers\SocialPostController::class, 'show'])->name('social-posts.show');
+        Route::post('/users/{user}/social-posts/{social_post?}', [App\Http\Controllers\SocialPostController::class, 'store'])->name('social-posts.store');
+        Route::delete('/users/{user}/social-posts/{social_post}', [App\Http\Controllers\SocialPostController::class, 'destroy'])->name('social-posts.destroy');
+
+        // likes
+        Route::post('/social-posts/{social_post}/likes', [App\Http\Controllers\LikeController::class, 'toggleLike'])->name('social-posts.likes');
+
+        // comments
+        Route::post('/social-posts/{social_post}/comments', [App\Http\Controllers\CommentController::class, 'store'])->name('social-posts.comments.create');
+        // Route::get('/social-posts/{social_post}/comments/count', [App\Http\Controllers\CommentController::class, 'comments_count'])->name('social-posts.comments.count');
 
 
         // profile

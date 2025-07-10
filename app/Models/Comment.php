@@ -5,14 +5,16 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class SocialPost extends Model
+class Comment extends Model
 {
     use HasFactory;
 
+    protected $table = 'social_posts_comments';
+
     protected $fillable = [
         'user_id',
+        'social_post_id',
         'content',
-        'image',
     ];
 
     public function user()
@@ -20,13 +22,8 @@ class SocialPost extends Model
         return $this->belongsTo(User::class, 'user_id', 'id');
     }
 
-    public function likes()
+    public function socialPost()
     {
-        return $this->hasMany(Like::class, 'social_post_id', 'id');
-    }
-
-    public function comments()
-    {
-        return $this->hasMany(Comment::class, 'social_post_id', 'id');
+        return $this->belongsTo(SocialPost::class, 'social_post_id', 'id');
     }
 }

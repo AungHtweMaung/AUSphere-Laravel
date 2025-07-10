@@ -16,4 +16,8 @@
     content: none;
 }
 
+.social-post-like-icon:hover {
+    cursor: pointer;
+}
+
 
