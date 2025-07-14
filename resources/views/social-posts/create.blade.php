@@ -6,7 +6,7 @@
     <div class="col-md-12">
         <div class="card shadow-sm">
             <div class="card-body">
-                <h2 class="text-center">{{ $social_post ? 'Edit Post' : 'Create Post' }}</h2>
+                <h2 class="text-center">{{ $social_post->exists ? 'Edit Post' : 'Create Post' }}</h2>
                 <form  method="POST" action="{{ route('social-posts.store', [$user->id, $social_post]) }}" enctype="multipart/form-data" class="form-submit">
                     @csrf
                     {{-- <div class="form-group">

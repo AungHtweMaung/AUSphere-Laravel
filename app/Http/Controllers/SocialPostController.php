@@ -22,8 +22,8 @@ class SocialPostController extends Controller
      */
     public function create(User $user, SocialPost $social_post = null)
     {
-        $social_post = $social_post ?: new SocialPost();
-        $button = $social_post ? 'Update': 'Create';
+        $social_post = $social_post ? $social_post : new SocialPost();
+        $button = $social_post->exists ? 'Update': 'Create';
         // dd($social_post);
         // This method can be used to show a form for creating a new social post
         return view('social-posts.create', compact('user', 'social_post', 'button'));

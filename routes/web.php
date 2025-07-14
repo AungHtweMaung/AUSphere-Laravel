@@ -63,6 +63,11 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'),'verified',]
         // Route::get('/social-posts/{social_post}/comments/count', [App\Http\Controllers\CommentController::class, 'comments_count'])->name('social-posts.comments.count');
 
 
+        // campus information
+        Route::view('/campus-informations/hua-mak', 'campus-informations.hua-mak.index')->name('campus-informations.huamak');
+        Route::view('/campus-informations/suvarnabhumi', 'campus-informations.suvarnabhumi.index')->name('campus-informations.suvarnabhumi');
+
+
         // profile
         // Route::view('/campus-information', 'campus-information.show')->name('campus-information.show');
         // Route::view('/campus-information/edit', 'campus-information.edit')->name('campus-information.edit');
