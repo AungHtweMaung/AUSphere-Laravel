@@ -6,6 +6,7 @@ use App\Models\News;
 use Illuminate\Http\Request;
 use App\Services\FileService;
 use App\Http\Requests\NewsRequest;
+use App\Models\NewsContent;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
@@ -18,7 +19,7 @@ class NewsController extends Controller
      */
     public function index()
     {
-        $news = News::whereNull('deleted_at')->filter()->paginate(4);
+        $news = News::with('newsContents')->whereNull('deleted_at')->filter()->paginate(4);
         return view('news.index', compact('news'));
     }
 
@@ -53,27 +54,73 @@ class NewsController extends Controller
      * @return \Illuminate\Http\RedirectResponse
      */
     public function store(NewsRequest $request)
+
     {
+        dd($request->all());
+
+
         $data = $request->validated();
         DB::beginTransaction();
 
         try {
-            if ($request->hasFile('image')) {
-                $imagePath = (new FileService())->storeImage($data['image'], 'news');
-                $data['image'] = $imagePath;
+            $news = News::create([
+                'user_id' => auth()->id(),
+                'title' => $request->title
+            ]);    // create news item
+
+            $newsItems = $request->input('news', []);
+            $userId = auth()->id();
+
+            foreach ($newsItems as $index => $item) {
+                $data = [
+                    'news_id' => $news->id, // Assuming same title for all
+                    'content' => $item['content'],
+                ];
+
+                if ($request->hasFile("news.$index.image")) {
+                    $imageFile = $request->file("news.$index.image");
+                    $data['image'] = (new FileService())->storeImage($imageFile, 'news');
+                }
+                NewsContent::create($data); // create news content
+
             }
 
-            $data['user_id'] = auth()->user()->id; // Assuming you want to set the user_id to the authenticated user
-            News::create($data);
             DB::commit();
+
             return response()->json([
-                'success'=>'News Created Successfully',
+                'success' => 'News Created Successfully',
                 'redirectUrl' => route('news.index')
             ]);
-        } catch(\Exception $e){
+        } catch (\Exception $e) {
             DB::rollBack();
-            return redirect()->back()->with('error', 'An error occurred while processing your request.');
+            return response()->json([
+                'error' => 'An error occurred while processing your request.',
+                'message' => $e->getMessage()
+            ], 500);
         }
+
+
+
+
+
+
+        // try {
+        //     if ($request->hasFile('image')) {
+        //         $imagePath = (new FileService())->storeImage($data['image'], 'news');
+        //         $data['image'] = $imagePath;
+        //     }
+
+        //     $data['user_id'] = auth()->user()->id; // Assuming you want to set the user_id to the authenticated user
+        //     News::create($data);
+        //     DB::commit();
+        //     return response()->json([
+        //         'success'=>'News Created Successfully',
+        //         'redirectUrl' => route('news.index')
+        //     ]);
+        // } catch(\Exception $e){
+        //     DB::rollBack();
+        //     return redirect()->back()->with('error', 'An error occurred while processing your request.');
+        // }
 
 
     }
@@ -84,6 +131,7 @@ class NewsController extends Controller
      */
     public function edit(News $news)
     {
+        $news->load('newsContents'); // Eager load news contents
         return view('news.edit', compact('news'));
     }
 
@@ -96,32 +144,76 @@ class NewsController extends Controller
      */
     public function update(NewsRequest $request, News $news)
     {
-        $data = $request->validated();
         DB::beginTransaction();
         try {
-            if ($request->hasFile('image')) {
-                Storage::delete('public/'. $news->image); // Delete old image if exists
-                $imagePath = (new FileService())->storeImage($data['image'], 'uploads');
-                $data['image'] = $imagePath;
+            $news->update([
+                'title' => $request->title
+            ]);
+
+            $newsItems = $request->input('news', []);
+            $existingIds = [];
+
+
+            foreach ($newsItems as $index => $item) {
+                $newsContentId = $item['id'] ?? null;
+                $data = [
+                    'news_id' => $news->id,
+                    'content' => $item['content'],
+                ];
+
+                // If image is uploaded
+                if ($request->hasFile("news.$index.image")) {
+                    $imageFile = $request->file("news.$index.image");
+
+                    if ($newsContentId) {
+                        $existingContent = $news->newsContents()->find($newsContentId);
+                        if ($existingContent && $existingContent->image) {
+                            (new FileService())->deleteImage($existingContent->image); // fix var name
+                        }
+                    }
+
+                    $data['image'] = (new FileService())->storeImage($imageFile, 'news'); // store image and get path
+                }
+                if ($newsContentId) {
+                    // Update existing content
+                    $news->newsContents()->where('id', $newsContentId)->update($data);
+                    $existingIds[] = $newsContentId;
+                } else {
+                    // Create new content for news
+                    $new = $news->newsContents()->create($data);
+                    $existingIds[] = $new->id;
+                }
             }
 
-            $news->update($data);
+            // Optionally: delete removed contents
+            $news->newsContents()->whereNotIn('id', $existingIds)->each(function ($content) {
+                if ($content->image) {
+                    (new FileService())->deleteImage($content->image);
+                }
+                $content->delete();
+            });
+
             DB::commit();
+
             return response()->json([
-                'success'=>'News Updated Successfully',
+                'success' => 'News Updated Successfully',
                 'redirectUrl' => route('news.index')
             ]);
-        } catch(\Exception $e){
+        } catch (\Exception $e) {
             DB::rollBack();
-            return redirect()->back()->with('error', 'An error occurred while updating the news.');
+            return response()->json([
+                'error' => 'An error occurred while updating the news.',
+                'message' => $e->getMessage()
+            ], 500);
         }
     }
+
 
 
     public function destroy(News $news)
     {
         DB::beginTransaction();
-        try{
+        try {
             $news->delete();
             $image = (new FileService())->deleteImage($news->image);
             DB::commit();
@@ -132,6 +224,4 @@ class NewsController extends Controller
             return response()->json(['error' => "Unexpected Error Occured"]);
         }
     }
-
-
 }

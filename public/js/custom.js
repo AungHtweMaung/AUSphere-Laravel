@@ -56,10 +56,10 @@ $(document).ready(function () {
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') // Laravel CSRF support
             },
-            beforeSend: function() {
+            beforeSend: function () {
                 $('.loader-container').show();
             },
-            complete: function() {
+            complete: function () {
                 $('.loader-container').hide();
             },
             success: function (response) {
@@ -87,10 +87,28 @@ $(document).ready(function () {
                 if (xhr.status === 422) {
                     let errors = xhr.responseJSON.errors;
                     // console.log(errors);
+                    // $.each(errors, function (field, messages) {
+                    //     let errorField = form.find('[name="' + field + '"]');
+                    //     errorField.addClass('is-invalid');
+                    //     form.find('[data-error-for="' + field + '"]').html(messages[0]);
+                    // });
+
                     $.each(errors, function (field, messages) {
-                        let errorField = form.find('[name="' + field + '"]');
-                        errorField.addClass('is-invalid');
-                        form.find('[data-error-for="' + field + '"]').html(messages[0]);
+                        // error is like news.0.content and news.0.image
+                        // We need to convert it to news[0][content] and news[0][image]
+
+                        let errorField = field.replace(/\.(\d+)\./g, '[$1][')   // news.0.content => news[0][content]
+                            .replace(/\.(\w+)/g, '][$1]');    // append last key
+                        errorField = field.includes('.') ? errorField + ']' : errorField;  // close the brackets if needed
+
+                        // Escape the name for jQuery selector (to use with attributes like name="news[0][content]")
+                        let escapedField = errorField.replace(/\[/g, '\\[').replace(/\]/g, '\\]');
+
+                        let input = form.find('[name="' + errorField + '"]');
+                        input.addClass('is-invalid');
+
+                        // You should have something like: <div data-error-for="news[0][content]"></div>
+                        form.find('[data-error-for="' + escapedField + '"]').html(messages[0]);
                     });
 
                 } else {
@@ -129,13 +147,13 @@ $(document).ready(function () {
                 $.ajax({
                     method: 'DELETE',
                     url: $(this).attr('data-href'),
-                    beforeSend: function() {
+                    beforeSend: function () {
                         $('.loader-container').show();
                     },
-                    complete: function() {
+                    complete: function () {
                         $('.loader-container').hide();
                     },
-                    success: function(response) {
+                    success: function (response) {
 
                         if (response.success) {
                             Swal.fire({
@@ -166,7 +184,7 @@ $(document).ready(function () {
                             });
                         }
                     },
-                    error: function(xhr, status, error) {
+                    error: function (xhr, status, error) {
                         Swal.fire({
                             title: 'Error',
                             text: 'Something went wrong!',
@@ -174,21 +192,22 @@ $(document).ready(function () {
                             confirmButtonText: 'OK'
                         });
                     }
-                });   }
+                });
+            }
         });
     });
 
-    $('#content').summernote({
-            height: 300,   // set editor height
-            placeholder: 'Enter content here...',
-            fontSizes: ['8', '9', '10', '11', '12', '14', '16', '18', '20', '22', '24', '28', '32', '36', '48', '64'],
-            toolbar: [
-                ['style', ['bold', 'italic', 'underline', 'clear']],
-                ['font', ['strikethrough', 'superscript', 'subscript']],
-                ['fontsize', ['fontsize']],
-                ['para', ['ul', 'ol']],
-                ['insert', ['link']],
-                ['view', ['codeview']]
-            ]
-        });
+    $('#content-container .content-summernote').summernote({
+        height: 300,   // set editor height
+        placeholder: 'Enter content here...',
+        fontSizes: ['8', '9', '10', '11', '12', '14', '16', '18', '20', '22', '24', '28', '32', '36', '48', '64'],
+        toolbar: [
+            ['style', ['bold', 'italic', 'underline', 'clear']],
+            ['font', ['strikethrough', 'superscript', 'subscript']],
+            ['fontsize', ['fontsize']],
+            ['para', ['ul', 'ol']],
+            ['insert', ['link']],
+            ['view', ['codeview']]
+        ]
+    });
 });

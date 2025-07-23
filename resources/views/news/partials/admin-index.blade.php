@@ -30,13 +30,14 @@
                             $num = ($news->currentPage() - 1) * $news->perPage() + 1;
                         @endphp
                         @foreach($news as $item)
+                        {{-- @dd($item->newsContents[0]->content) --}}
                         <tr>
                             <td>{{ $num }}</td>
                             <td >{{ Str::limit($item->title, 50, '...') }}</td>
-                            <td class="">{!! Str::limit($item->content, 50, '...') !!}</td>
+                            <td class="">{!! Str::limit($item->newsContents[0]->content, 50, '...') !!}</td>
                             <td>
-                                @if($item->image && file_exists(public_path('storage/' . $item->image)))
-                                    <img src="{{ asset('storage/' . $item->image) }}" alt="{{ $item->title }}" class="img-thumbnail" style="width: 100px; height: auto;">
+                                @if($item->newsContents[0]->image && file_exists(public_path('storage/' . $item->newsContents[0]->image)))
+                                    <img src="{{ asset('storage/' . $item->newsContents[0]->image) }}" alt="{{ $item->title }}" class="img-thumbnail" style="width: 100px; height: auto;">
                                 @else
                                     No Image
                                 @endif
