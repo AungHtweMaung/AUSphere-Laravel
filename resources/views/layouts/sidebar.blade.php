@@ -32,28 +32,25 @@
 
         <li class="nav-item {{ isset($elementActive) && $elementActive == 'profiles' ? 'active': '' }}">
             <a class="nav-link" href="{{ route('profiles.show', auth()->user()->id) }}">
-                <i class="fa-regular fa-building menu-icon"></i>
+                <i class="fa-regular fa-user menu-icon"></i>
                 <span class="menu-title">Profile</span>
             </a>
         </li>
 
-        {{-- <li class="nav-item {{ (isset($elementActive) && Str::startsWith($elementActive, 'campus-information')) ? 'active' : '' }}">
-            <a class="nav-link" data-bs-toggle="collapse" href="#campus-information" aria-expanded="false"
+        <li class="nav-item {{ (isset($elementActive) && Str::startsWith($elementActive, 'campus-informations')) ? 'active' : '' }}">
+            <a class="nav-link" data-bs-toggle="collapse" href="#campus-informations" aria-expanded="false"
                 aria-controls="ui-basic">
-                <i class="icon-layout menu-icon"></i>
+                <i class="fa-regular fa-building menu-icon"></i>
                 <span class="menu-title">Campus Information</span>
-                <i class="menu-arrow"></i>
             </a>
-            <div class="collapse {{ (isset($elementActive) && Str::startsWith($elementActive, 'campus-information')) ? 'show' : '' }}" id="campus-information">
+            <div class="collapse {{ (isset($elementActive) && Str::startsWith($elementActive, 'campus-informations')) ? 'show' : '' }}" id="campus-informations">
                 <ul class="nav flex-column sub-menu">
-                    <li class="nav-item "> <a class="nav-link {{ $elementActive == 'campus-information.show' ? 'active' : '' }}" href="{{ route('campus-information.show') }}">View</a></li>
-                    <li class="nav-item"> <a class="nav-link {{ $elementActive == 'campus-information.edit' ? 'active' : '' }}" href="{{ route('campus-information.edit') }}" href="#">Edit</a></li>
-                    <li class="nav-item"> <a class="nav-link" href="{{ route('user.profileview') }}">View</a></li>
-                    <li class="nav-item"> <a class="nav-link" href="{{ route('user.profileedit') }}">Edit</a></li>
-                    <li class="nav-item"> <a class="nav-link" href="#">Typography</a></li>
+                    <li class="nav-item "> <a class="nav-link {{ $elementActive == 'campus-informations.hua-mak' ? 'active' : '' }}" href="{{ route('campus-informations.huamak') }}">Hua Mak</a></li>
+                    <li class="nav-item "> <a class="nav-link {{ $elementActive == 'campus-informations.suvarnabhumi' ? 'active' : '' }}" href="{{ route('campus-informations.suvarnabhumi') }}">Suvarnabhumi</a></li>
+                    {{-- <li class="nav-item"> <a class="nav-link" href="#">Typography</a></li> --}}
                 </ul>
             </div>
-        </li> --}}
+        </li>
         {{-- <li class="nav-item">
             <a class="nav-link" data-bs-toggle="collapse" href="#conversation" aria-expanded="false"
                 aria-controls="conversation">

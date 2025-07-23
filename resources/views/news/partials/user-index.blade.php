@@ -5,7 +5,7 @@
 @extends('layouts.app', [
     'elementActive' => 'news'
     ])
-    
+
 @section('css')
     <link rel="stylesheet" href="{{ asset('css/user-news.css') }}">
 @endsection
@@ -26,7 +26,7 @@
                         <div class="card-body">
                             <p>{{ $new->created_at->format('d-m-Y') }}</p>
                             <p>{{ $new->title }}</p>
-                            <p>{!! Str::limit($new->content, 50, '...') !!}</p>
+                            <p>{!! Str::limit($new->newsContents->content, 50, '...') !!}</p>
                         </div>
                     </div>
                 </a>

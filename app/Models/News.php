@@ -11,10 +11,15 @@ class News extends Model
 {
     use HasFactory, SoftDeletes, NewsTrait;
 
-    protected $fillable = ['user_id', 'title', 'content', 'image'];
+    protected $fillable = ['user_id', 'title'];
 
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function newsContents()
+    {
+        return $this->hasMany(NewsContent::class, 'news_id', 'id');
     }
 }

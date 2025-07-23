@@ -4,10 +4,10 @@
 @section('content')
 <div class="row">
     <div class="col-md-12">
-        <div class="card">
+        <div class="card shadow-sm">
             <div class="card-body">
-                <h2 class="text-center">Create Post</h2>
-                <form  method="POST" action="{{ route('social-posts.store', $user->id) }}" enctype="multipart/form-data" class="form-submit">
+                <h2 class="text-center">{{ $social_post->exists ? 'Edit Post' : 'Create Post' }}</h2>
+                <form  method="POST" action="{{ route('social-posts.store', [$user->id, $social_post]) }}" enctype="multipart/form-data" class="form-submit">
                     @csrf
                     {{-- <div class="form-group">
                         <label for="title">Title</label>
@@ -17,7 +17,7 @@
                     </div> --}}
                     <div class="form-group">
                         <label for="content">Content</label>
-                        <textarea class="form-control" name="content" id="content" cols="30" rows="5" placeholder="Enter content" required></textarea>
+                        <textarea class="form-control" name="content" id="content" cols="30" rows="5" placeholder="Enter content" required>{!! $social_post->content !!}</textarea>
                         <div class="invalid-feedback" data-error-for="content"></div>
                     </div>
 
@@ -29,7 +29,7 @@
                     <div class="text-end">
                         <a href="{{route('profiles.show', $user->id)}}" class="btn btn-dark">Back</a>
 
-                        <button type="submit" class="btn btn-primary">Create</button>
+                        <button type="submit" class="btn btn-primary">{{ $button }}</button>
                     </div>
                 </form>
             </div>
