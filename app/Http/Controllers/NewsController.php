@@ -138,7 +138,7 @@ class NewsController extends Controller
      *
      * @param  \App\Http\Requests\NewsRequest
      * @param  \App\Models\News  $news
-     * @return \Illuminate\Http\RedirectResponsecod 
+     * @return \Illuminate\Http\RedirectResponsecod
      */
     public function update(NewsRequest $request, News $news)
     {
@@ -214,7 +214,12 @@ class NewsController extends Controller
         DB::beginTransaction();
         try {
             $news->delete();
-            $image = (new FileService())->deleteImage($news->image);
+            foreach ($news->newsContents as $content) {
+                if ($content->image) {
+                    (new FileService())->deleteImage($content->image); // delete image
+                }
+                $content->delete(); // delete news content
+            }
             DB::commit();
             return response()->json(['success' => 'Deleted Successfully.']);
         } catch (\Exception $e) {

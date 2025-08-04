@@ -8,7 +8,7 @@
                     <h2 class="text-center">Edit News</h2>
 
                     <form method="POST" action="{{ route('news.update', $news->id) }}" enctype="multipart/form-data"
-                        class="form-submit">
+                        class="form-submit-multiple-contents">
                         @csrf
                         @method('PUT')
 

@@ -15,22 +15,23 @@
     <div class="col-md-12">
         {{-- @include('filters.news-filter') --}}
         <h2 class="text-center mb-5">News List</h2>
-        <div class="row">
+        <div class="row d-flex">
             @foreach ($news as $new)
-            <div class="col-sm-6 col-md-4 col-xl-3 mb-5" >
-                <a href="{{ route('news.show', $new->id) }}">
-                    <div class="card news-card shadow-sm p-3" >
-                        <div class="card-title text-center">
-                            <img src="{{ asset('storage/'. $new->newsContents[0]->image) }}" class="news-card-image" style="max-width: 400px; width:100%; max-height: 250px;">
+            {{-- @dd($new->newsContents) --}}
+                <div class="col-sm-6 col-md-4 col-xl-3 mb-5" >
+                    <a href="{{ route('news.show', $new->id) }}">
+                        <div class="card news-card shadow-sm p-3" >
+                            <div class="card-title text-center">
+                                <img src="{{ asset('storage/'. $new->newsContents[0]->image) }}" class="news-card-image" style="max-width: 400px; width:100%; max-height: 250px;">
+                            </div>
+                            <div class="card-body">
+                                <p>{{ $new->created_at->format('d-m-Y') }}</p>
+                                <p>{{ $new->title }}</p>
+                                <p>{!! Str::limit($new->newsContents[0]->content, 50, '...') !!}</p>
+                            </div>
                         </div>
-                        <div class="card-body">
-                            <p>{{ $new->created_at->format('d-m-Y') }}</p>
-                            <p>{{ $new->title }}</p>
-                            <p>{!! Str::limit($new->newsContents[0]->content, 50, '...') !!}</p>
-                        </div>
-                    </div>
-                </a>
-            </div>
+                    </a>
+                </div>
             @endforeach
         </div>
         <div>

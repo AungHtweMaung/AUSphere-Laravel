@@ -33,41 +33,9 @@ $(document).ready(function () {
 
 
 
-
-
-    // store, update form submit
+     // store, update form submit
     $('.form-submit').submit(function (e) {
         e.preventDefault();
-
-        // Loop through and clean up all removed content pairs
-    $('#content-container .content-pair').each(function () {
-        let index = $(this).data('index');
-        let idField = $(this).find(`input[name="news[${index}][id]"]`);
-
-        // If the ID field is empty (because it was removed), remove it from the form data
-        if (!idField.length || idField.val() === '') {
-            idField.remove();  // Remove the ID field completely
-        }
-    });
-
-
-
-        $('.content-summernote').each(function() {
-            var editorContent = $(this).summernote('code');
-            const cleanContent = editorContent.replace(/<script.*?>.*?<\/script>/gi, '');
-
-            const isOnlyHtmlTags = cleanContent.replace(/<[^>]+>/g, '').trim() === '';
-
-            if (isOnlyHtmlTags) {
-                $(this).summernote('code', '');
-            } else {
-                $(this).summernote('code', cleanContent);
-            }
-        });
-
-
-
-        reindexPairs(); // Ensure pairs are reindexed before submission
 
         let form = $(this);
         let actionUrl = form.attr('action');
@@ -75,7 +43,6 @@ $(document).ready(function () {
         // Remove previous error states
         form.find('.invalid-feedback').html('');
         form.find('input, select, textarea').removeClass('is-invalid');
-
 
         $.ajax({
             url: actionUrl,
@@ -105,7 +72,7 @@ $(document).ready(function () {
                     allowOutsideClick: false, // optional: prevent closing by clicking outside
                     allowEscapeKey: false
                 }).then((result) => {
-                    // console.log(result);
+                    console.log(result);
                     if (result.isConfirmed) {
                         // Reset Summernote content if present in the form
                         if (response.redirectUrl) {
@@ -154,6 +121,128 @@ $(document).ready(function () {
         });
 
     });
+
+
+
+    // // store, update form submit
+    // $('.form-submit').submit(function (e) {
+    //     e.preventDefault();
+
+    //     // Loop through and clean up all removed content pairs
+    //     $('#content-container .content-pair').each(function () {
+    //         let index = $(this).data('index');
+    //         let idField = $(this).find(`input[name="news[${index}][id]"]`);
+
+    //         // If the ID field is empty (because it was removed), remove it from the form data
+    //         if (!idField.length || idField.val() === '') {
+    //             idField.remove();  // Remove the ID field completely
+    //         }
+    //     });
+
+
+
+    //     $('.content-summernote').each(function() {
+    //         var editorContent = $(this).summernote('code');
+    //         const cleanContent = editorContent.replace(/<script.*?>.*?<\/script>/gi, '');
+
+    //         const isOnlyHtmlTags = cleanContent.replace(/<[^>]+>/g, '').trim() === '';
+
+    //         if (isOnlyHtmlTags) {
+    //             $(this).summernote('code', '');
+    //         } else {
+    //             $(this).summernote('code', cleanContent);
+    //         }
+    //     });
+
+
+
+    //     reindexPairs(); // Ensure pairs are reindexed before submission
+
+    //     let form = $(this);
+    //     let actionUrl = form.attr('action');
+    //     let formData = new FormData(this);  // send as Form Data
+    //     // Remove previous error states
+    //     form.find('.invalid-feedback').html('');
+    //     form.find('input, select, textarea').removeClass('is-invalid');
+
+
+    //     $.ajax({
+    //         url: actionUrl,
+    //         type: 'POST',
+    //         data: formData,
+    //         // Prevent jQuery from automatically converting data into a query string.
+    //         processData: false, // don't process data by jquery and send as FormData
+    //         contentType: false, // choose correct content type by browser
+    //         headers: {
+    //             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') // Laravel CSRF support
+    //         },
+    //         beforeSend: function () {
+    //             $('.loader-container').show();
+    //         },
+    //         complete: function () {
+    //             $('.loader-container').hide();
+    //         },
+    //         success: function (response) {
+    //             $('#content').summernote('reset'); // reset to initial content
+    //             form[0].reset();
+
+    //             Swal.fire({
+    //                 title: 'Success',
+    //                 text: response.success,
+    //                 icon: 'success',
+    //                 confirmButtonText: 'OK',
+    //                 allowOutsideClick: false, // optional: prevent closing by clicking outside
+    //                 allowEscapeKey: false
+    //             }).then((result) => {
+    //                 // console.log(result);
+    //                 if (result.isConfirmed) {
+    //                     // Reset Summernote content if present in the form
+    //                     if (response.redirectUrl) {
+    //                         window.location.href = response.redirectUrl;
+    //                     }
+    //                 }
+    //             });
+    //         },
+    //         error: function (xhr) {
+    //             if (xhr.status === 422) {
+    //                 let errors = xhr.responseJSON.errors;
+    //                 // console.log(errors);
+    //                 // $.each(errors, function (field, messages) {
+    //                 //     let errorField = form.find('[name="' + field + '"]');
+    //                 //     errorField.addClass('is-invalid');
+    //                 //     form.find('[data-error-for="' + field + '"]').html(messages[0]);
+    //                 // });
+
+    //                 $.each(errors, function (field, messages) {
+    //                     // error is like news.0.content and news.0.image
+    //                     // We need to convert it to news[0][content] and news[0][image]
+
+    //                     let errorField = field.replace(/\.(\d+)\./g, '[$1][')   // news.0.content => news[0][content]
+    //                         .replace(/\.(\w+)/g, '][$1]');    // append last key
+    //                     errorField = field.includes('.') ? errorField + ']' : errorField;  // close the brackets if needed
+
+    //                     // Escape the name for jQuery selector (to use with attributes like name="news[0][content]")
+    //                     let escapedField = errorField.replace(/\[/g, '\\[').replace(/\]/g, '\\]');
+
+    //                     let input = form.find('[name="' + errorField + '"]');
+    //                     input.addClass('is-invalid');
+
+    //                     // You should have something like: <div data-error-for="news[0][content]"></div>
+    //                     form.find('[data-error-for="' + escapedField + '"]').html(messages[0]);
+    //                 });
+
+    //             } else {
+    //                 Swal.fire({
+    //                     title: 'Error',
+    //                     text: 'Oops! Something went wrong.',
+    //                     icon: 'error',
+    //                     confirmButtonText: 'OK'
+    //                 });
+    //             }
+    //         }
+    //     });
+
+    // });
 
 
 
@@ -228,7 +317,7 @@ $(document).ready(function () {
         });
     });
 
-    $('#content-container .content-summernote').summernote({
+    $('.content-summernote').summernote({
         height: 300,   // set editor height
         placeholder: 'Enter content here...',
         fontSizes: ['8', '9', '10', '11', '12', '14', '16', '18', '20', '22', '24', '28', '32', '36', '48', '64'],
