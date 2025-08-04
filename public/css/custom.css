@@ -131,3 +131,27 @@ a {
     gap: 0.5rem;
     width: 100px;
 }
+
+
+/* for summernot */
+/* Summernote Modal Fixes */
+.note-editor .note-modal {
+  overflow: visible;
+}
+
+.note-editor .note-modal-footer {
+  height: auto;
+  padding: 10px;
+}
+
+.note-editor .note-modal-body {
+  overflow: visible;
+}
+
+.note-modal-backdrop.in {
+  opacity: 0.5;
+}
+
+.note-modal-footer {
+    height: 80px;
+}

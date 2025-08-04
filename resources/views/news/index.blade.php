@@ -9,8 +9,8 @@
     @if (auth()->user()->role == 'admin')
         @include('news.partials.admin-index')
     @else
-        {{-- @include('news.partials.user-index') --}}
-        @include('news.partials.admin-index')
+        @include('news.partials.user-index')
+        {{-- @include('news.partials.admin-index') --}}
 
     @endif
 @endsection

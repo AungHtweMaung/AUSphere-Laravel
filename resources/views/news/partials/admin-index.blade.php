@@ -35,7 +35,7 @@
                             <td>{{ $num }}</td>
                             <td >{{ Str::limit($item->title, 50, '...') }}</td>
                             {{-- <td>{!! Str::limit($item->newsContents[0]['content'], 50, '...') !!}</td> --}}
-                            <td>{{ Str::limit(strip_tags($item->newsContents[0]['content']), 50, '...') }}</td>
+                            <td>{!! Str::limit(strip_tags($item->newsContents[0]['content']), 50, '...') !!}</td>
                             <td>
                                 @if($item->newsContents[0]->image && file_exists(public_path('storage/' . $item->newsContents[0]->image)))
                                     <img src="{{ asset('storage/' . $item->newsContents[0]['image']) }}" alt="{{ $item->title }}" class="img-thumbnail" style="width: 100px; height: auto;">

@@ -33,7 +33,7 @@ $(document).ready(function () {
 
 
 
-     // store, update form submit
+    // store, update form submit
     $('.form-submit').submit(function (e) {
         e.preventDefault();
 
@@ -318,7 +318,9 @@ $(document).ready(function () {
     });
 
     $('.content-summernote').summernote({
-        height: 300,   // set editor height
+        dialogsInBody: true,
+        disableDragAndDrop: true,
+        height: 300,
         placeholder: 'Enter content here...',
         fontSizes: ['8', '9', '10', '11', '12', '14', '16', '18', '20', '22', '24', '28', '32', '36', '48', '64'],
         toolbar: [
@@ -326,8 +328,19 @@ $(document).ready(function () {
             ['font', ['strikethrough', 'superscript', 'subscript']],
             ['fontsize', ['fontsize']],
             ['para', ['ul', 'ol']],
-            ['insert', ['link']],
+            ['insert', ['link']], // Added 'unlink' for better UX
             ['view', ['codeview']]
-        ]
+        ],
+        // Add these additional settings
+        popover: {
+            link: [
+                ['link', ['linkDialogShow', 'unlink']]
+            ]
+        },
+        // callbacks: {
+        //     onInit: function () {
+        //         console.log('Summernote initialized');
+        //     }
+        // }
     });
 });
