@@ -39,12 +39,43 @@ $(document).ready(function () {
     $('.form-submit').submit(function (e) {
         e.preventDefault();
 
+        // Loop through and clean up all removed content pairs
+    $('#content-container .content-pair').each(function () {
+        let index = $(this).data('index');
+        let idField = $(this).find(`input[name="news[${index}][id]"]`);
+
+        // If the ID field is empty (because it was removed), remove it from the form data
+        if (!idField.length || idField.val() === '') {
+            idField.remove();  // Remove the ID field completely
+        }
+    });
+
+
+
+        $('.content-summernote').each(function() {
+            var editorContent = $(this).summernote('code');
+            const cleanContent = editorContent.replace(/<script.*?>.*?<\/script>/gi, '');
+
+            const isOnlyHtmlTags = cleanContent.replace(/<[^>]+>/g, '').trim() === '';
+
+            if (isOnlyHtmlTags) {
+                $(this).summernote('code', '');
+            } else {
+                $(this).summernote('code', cleanContent);
+            }
+        });
+
+
+
+        reindexPairs(); // Ensure pairs are reindexed before submission
+
         let form = $(this);
         let actionUrl = form.attr('action');
         let formData = new FormData(this);  // send as Form Data
         // Remove previous error states
         form.find('.invalid-feedback').html('');
         form.find('input, select, textarea').removeClass('is-invalid');
+
 
         $.ajax({
             url: actionUrl,
@@ -74,7 +105,7 @@ $(document).ready(function () {
                     allowOutsideClick: false, // optional: prevent closing by clicking outside
                     allowEscapeKey: false
                 }).then((result) => {
-                    console.log(result);
+                    // console.log(result);
                     if (result.isConfirmed) {
                         // Reset Summernote content if present in the form
                         if (response.redirectUrl) {

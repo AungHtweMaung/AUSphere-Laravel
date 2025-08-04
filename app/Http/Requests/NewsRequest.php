@@ -24,7 +24,7 @@ class NewsRequest extends FormRequest
         return [
             'title' => 'required|string|max:255',
             // 'news' => 'required|array|min:1',
-            'news.*.content' => 'required|string',
+            'news.*.content' => 'required',
             'news.*.image' => $this->isMethod('post')
                 ? 'required|image|mimes:jpeg,png,jpg,svg|max:2048'
                 : 'nullable|image|mimes:jpeg,png,jpg,svg|max:2048',
@@ -36,8 +36,8 @@ class NewsRequest extends FormRequest
         return [
             'title.required' => 'The title is required.',
             // 'news.required' => 'At least one news item is required.',
-            'news.*.content.required' => 'Content is required for each news item.',
-            'news.*.image.required' => 'An image is required for each news item when creating new news.',
+            'news.*.content' => 'Content is required',
+            'news.*.image.required' => 'An image is required',
         ];
     }
 

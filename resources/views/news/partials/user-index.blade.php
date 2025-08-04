@@ -21,12 +21,12 @@
                 <a href="{{ route('news.show', $new->id) }}">
                     <div class="card news-card shadow-sm p-3" >
                         <div class="card-title text-center">
-                            <img src="{{ asset('storage/'. $new->image) }}" class="news-card-image"style="max-width: 400px; width:100%; max-height: 250px;">
+                            <img src="{{ asset('storage/'. $new->newsContents[0]->image) }}" class="news-card-image" style="max-width: 400px; width:100%; max-height: 250px;">
                         </div>
                         <div class="card-body">
                             <p>{{ $new->created_at->format('d-m-Y') }}</p>
                             <p>{{ $new->title }}</p>
-                            <p>{!! Str::limit($new->newsContents->content, 50, '...') !!}</p>
+                            <p>{!! Str::limit($new->newsContents[0]->content, 50, '...') !!}</p>
                         </div>
                     </div>
                 </a>
