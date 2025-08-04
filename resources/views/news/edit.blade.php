@@ -8,7 +8,7 @@
                     <h2 class="text-center">Edit News</h2>
 
                     <form method="POST" action="{{ route('news.update', $news->id) }}" enctype="multipart/form-data"
-                        class="form-submit">
+                        class="form-submit-multiple-contents">
                         @csrf
                         @method('PUT')
 
@@ -25,7 +25,7 @@
                             {{-- Loop Through Multiple Contents and Images --}}
                             @foreach ($news->newsContents as $index => $item)
                                 <div class="content-pair border rounded p-3 mb-4">
-                                <input type="hidden" name="news[{{ $index }}][id]" value="{{ $item->id }}">
+                                    <input type="hidden" name="news[{{ $index }}][id]" value="{{ $item->id }}">
                                     <h5>Content Set #{{ $index + 1 }}</h5>
                                     {{-- Content --}}
                                     <div class="form-group">

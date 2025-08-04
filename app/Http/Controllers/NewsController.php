@@ -42,6 +42,7 @@ class NewsController extends Controller
      */
     public function show(News $news)
     {
+        $news->load('newsContents'); // Eager load news content
         return view('news.show', compact('news'));
     }
 
@@ -54,11 +55,8 @@ class NewsController extends Controller
      * @return \Illuminate\Http\RedirectResponse
      */
     public function store(NewsRequest $request)
-
     {
-        dd($request->all());
-
-
+        // dd($request->all());
         $data = $request->validated();
         DB::beginTransaction();
 
@@ -140,10 +138,11 @@ class NewsController extends Controller
      *
      * @param  \App\Http\Requests\NewsRequest
      * @param  \App\Models\News  $news
-     * @return \Illuminate\Http\RedirectResponse
+     * @return \Illuminate\Http\RedirectResponsecod
      */
     public function update(NewsRequest $request, News $news)
     {
+        // dd($request->all());
         DB::beginTransaction();
         try {
             $news->update([
@@ -215,7 +214,12 @@ class NewsController extends Controller
         DB::beginTransaction();
         try {
             $news->delete();
-            $image = (new FileService())->deleteImage($news->image);
+            foreach ($news->newsContents as $content) {
+                if ($content->image) {
+                    (new FileService())->deleteImage($content->image); // delete image
+                }
+                $content->delete(); // delete news content
+            }
             DB::commit();
             return response()->json(['success' => 'Deleted Successfully.']);
         } catch (\Exception $e) {

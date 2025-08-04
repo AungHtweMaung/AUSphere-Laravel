@@ -71,7 +71,7 @@
                                         <div class="d-flex align-items-center mb-1">
                                             <img src="{{ asset('src/assets/images/default-user-image.svg') }}" width="24px" alt="" class="me-2">
                                             <strong>{{ $comment->user->name }}</strong>
-                                            <span class="text-muted ms-2" style="font-size: 0.9em;">{{ $comment->created_at->diffForHumans() }}</span>
+                                            {{-- <span class="text-muted ms-2" style="font-size: 0.9em;">{{ $comment->created_at->diffForHumans() }}</span> --}}
                                         </div>
                                         <div>
                                             {{ $comment->content }}

@@ -7,7 +7,7 @@
             <div class="card">
                 <div class="card-body">
                     <h2 class="text-center">Create News</h2>
-                    <form method="POST" action="{{ route('news.store') }}" enctype="multipart/form-data" class="form-submit">
+                    <form method="POST" action="{{ route('news.store') }}" enctype="multipart/form-data" class="form-submit-multiple-contents">
                         @csrf
                         <div class="form-group">
                             <label for="title">Title</label>

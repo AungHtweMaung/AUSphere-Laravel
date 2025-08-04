@@ -33,7 +33,7 @@
                     </div>
                     <div class="form-group">
                         <label for="content">Content <span class="text-danger">*</span></label>
-                        <textarea class="form-control" name="content" id="content" cols="30" rows="5" placeholder="Enter content" required></textarea>
+                        <textarea class="form-control content-summernote" name="content" id="content" cols="30" rows="5" placeholder="Enter content" required></textarea>
                         <div class="invalid-feedback" data-error-for="content"></div>
                     </div>
 
