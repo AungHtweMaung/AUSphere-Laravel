@@ -19,7 +19,17 @@ class NewsController extends Controller
      */
     public function index()
     {
-        $news = News::with('newsContents')->whereNull('deleted_at')->filter()->paginate(4);
+        switch(auth()->user()->role) {
+            case 'admin':
+                $news = News::with('newsContents')->whereNull('deleted_at')->filter()->paginate(5);
+                break;
+            case 'user':
+                $news = News::with('newsContents')->whereNull('deleted_at')->filter()->paginate(8);
+                break;
+            default:
+                $news = News::with('newsContents')->whereNull('deleted_at')->filter()->paginate(5);
+        }
+        
         return view('news.index', compact('news'));
     }
 
