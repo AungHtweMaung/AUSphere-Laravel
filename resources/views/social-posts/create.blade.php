@@ -1,5 +1,5 @@
 @extends('layouts.app', [
-    'elementActive' => 'news'
+    'elementActive' => 'trend-posts'
     ])
 @section('content')
 <div class="row">

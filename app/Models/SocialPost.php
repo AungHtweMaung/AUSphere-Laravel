@@ -4,7 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-
 class SocialPost extends Model
 {
     use HasFactory;
@@ -28,5 +27,10 @@ class SocialPost extends Model
     public function comments()
     {
         return $this->hasMany(Comment::class, 'social_post_id', 'id');
+    }
+
+    public function images()
+    {
+        return $this->hasMany(SocialPostImage::class, 'social_post_id', 'id');
     }
 }

@@ -14,7 +14,11 @@ class SocialPostController extends Controller
      */
     public function index()
     {
-        //
+        $socialPosts = SocialPost::with(['user', 'likes', 'comments.user'])
+            ->orderBy('created_at', 'desc')
+            ->get();
+            // ->paginate(10);
+        return view('social-posts.index', compact('socialPosts'));
     }
 
     /**

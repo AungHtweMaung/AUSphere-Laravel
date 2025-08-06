@@ -36,6 +36,9 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'),'verified',]
         // events
         Route::resource('/events', App\Http\Controllers\EventController::class);
 
+        // acamedic calendars
+        Route::resource('/academic-calendars', App\Http\Controllers\AcademicCalendarController::class);
+
 
         // department types
         Route::resource('/department-types', App\Http\Controllers\DepartmentTypeController::class);
@@ -49,8 +52,10 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'),'verified',]
 
 
         // social posts
+        Route::get('/social-posts', [App\Http\Controllers\SocialPostController::class, 'index'])->name('social-posts.index');
+
         Route::get('/users/{user}/social-posts/create/{social_post?}', [App\Http\Controllers\SocialPostController::class, 'create'])->name('social-posts.create');
-        Route::get('/users/{user}/social-posts', [App\Http\Controllers\SocialPostController::class, 'index'])->name('social-posts.index');
+        // Route::get('/users/{user}/social-posts', [App\Http\Controllers\SocialPostController::class, 'index'])->name('social-posts.index');
         Route::get('/social-posts/{social_post}', [App\Http\Controllers\SocialPostController::class, 'show'])->name('social-posts.show');
         Route::post('/users/{user}/social-posts/{social_post?}', [App\Http\Controllers\SocialPostController::class, 'store'])->name('social-posts.store');
         Route::delete('/users/{user}/social-posts/{social_post}', [App\Http\Controllers\SocialPostController::class, 'destroy'])->name('social-posts.destroy');
