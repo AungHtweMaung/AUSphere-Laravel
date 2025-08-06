@@ -17,7 +17,7 @@
         </li>
 
         <li class="nav-item {{ (isset($elementActive) && $elementActive == 'academic-calendars') ? 'active' : '' }}">
-            <a class="nav-link" href="{{ route('academic-calendars.create') }}">
+            <a class="nav-link" href="{{ route('academic-calendars.index') }}">
                 {{-- <i class="icon-grid menu-icon"></i> --}}
                 <i class="fa-regular fa-newspaper fa-2x menu-icon"></i>
                 <span class="menu-title">Academic Calendar</span>

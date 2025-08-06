@@ -15,7 +15,11 @@ class AcademicCalendarController extends Controller
     public function index()
     {
         // Fetch all academic calendars
-        $academicCalendars = AcademicCalendar::paginate(5);
+        if (auth()->user()->role === 'admin') {
+            $academicCalendars = AcademicCalendar::paginate(5);
+        } else {
+            $academicCalendars = AcademicCalendar::latest()->paginate(2);
+        }
 
         // Return the view with the academic calendars
         return view('acamedic-calendars.index', compact('academicCalendars'));
@@ -106,8 +110,22 @@ class AcademicCalendarController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(AcademicCalendar $academic_calendar)
     {
-        //
+        try {
+            // Delete the academic calendar record
+            (new FileService())->deleteImage($academic_calendar->calendar_file ?? '');
+            $academic_calendar->delete();
+
+            return response()->json([
+                'success' => 'Academic Calendar Deleted Successfully.',
+                'redirectUrl' => route('academic-calendars.index')
+            ]);
+        } catch (\Exception $e) {
+            logger($e->getMessage());
+            return response()->json([
+                'error' => 'An error occurred while deleting the academic calendar.'
+            ], 500);
+        }
     }
 }
