@@ -15,7 +15,7 @@
                     <div class="card-body ">
                         @foreach ($news->newsContents as $newsContent)
                             <img src="{{ asset('storage/' . $newsContent['image']) }}" class="card-img" height="" alt="News Image">
-                            <div class="card-text my-3" style="text-align: justify !important; word-spacing: 2px; line-height: 1.6; letter-spacing: 2px; text-indent: 4em;">
+                            <div class="card-text my-3 text-wrap" style="text-align: justify !important; word-spacing: 2px; line-height: 1.6; letter-spacing: 2px; text-indent: 4em;">
                                 {{-- @dd($newsContent) --}}
                                 {{-- @dd($newsContent['content']) --}}
                                 {!! $newsContent['content'] !!}

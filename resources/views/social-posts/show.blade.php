@@ -3,7 +3,7 @@
 @endphp
 
 @extends('layouts.app', [
-    'elementActive' => 'profiles',
+    'elementActive' => 'trend-posts',
 ])
 
 @section('css')

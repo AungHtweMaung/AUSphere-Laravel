@@ -9,6 +9,21 @@
             </a>
         </li>
 
+        <li class="nav-item {{ (isset($elementActive) && $elementActive == 'trend-posts') ? 'active' : '' }} }}">
+            <a class="nav-link" href="{{ route('social-posts.index') }}">
+                <i class="fa-regular fa-face-smile-beam menu-icon"></i>
+                <span class="menu-title">Trending Posts</span>
+            </a>
+        </li>
+
+        <li class="nav-item {{ (isset($elementActive) && $elementActive == 'academic-calendars') ? 'active' : '' }}">
+            <a class="nav-link" href="{{ route('academic-calendars.create') }}">
+                {{-- <i class="icon-grid menu-icon"></i> --}}
+                <i class="fa-regular fa-newspaper fa-2x menu-icon"></i>
+                <span class="menu-title">Academic Calendar</span>
+            </a>
+        </li>
+
         <li class="nav-item {{ (isset($elementActive) && $elementActive == 'events') ? 'active' : '' }} }}">
             <a class="nav-link" href="{{ route('events.index') }}">
                 <i class="fa-regular fa-calendar menu-icon"></i>
