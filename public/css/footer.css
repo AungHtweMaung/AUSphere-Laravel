@@ -1,0 +1,19 @@
+.department-link {
+    position: relative;
+    text-decoration: none; /* Remove the default underline */
+}
+
+.department-link::before {
+    content: "";
+    position: absolute;
+    bottom: 0; /* Position it at the bottom of the text */
+    left: 0;
+    height: 2px; /* Thickness of the underline */
+    width: 100%;
+    background-color: transparent; /* Hidden by default */
+    transition: background-color 0.3s; /* Smooth transition for the underline color */
+}
+
+.department-link:hover::before {
+    background-color: white; /* Your underline color on hover */
+}

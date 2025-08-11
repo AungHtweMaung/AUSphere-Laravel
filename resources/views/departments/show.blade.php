@@ -20,10 +20,10 @@
                     <img src="{{ asset('storage/' . $department->image) }}" alt="" style="max-width:300px; width:100%; height:auto;">
                 </div>
             </div>
-            <div>
+            {{-- <div>
                 <a href="{{ route('departments.index') }}" class="btn btn-dark">Back</a>
 
-            </div>
+            </div> --}}
         </div>
 
     </div>

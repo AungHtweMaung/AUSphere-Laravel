@@ -8,7 +8,6 @@ use Illuminate\Database\Eloquent\Builder;
 trait EventTrait
 {
     public function scopeFilter(Builder $query) {
-
         if (request('searchTitle')) {
             $query->where('title', 'like', '%'. request('searchTitle'). '%');
         }
