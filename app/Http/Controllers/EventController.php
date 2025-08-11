@@ -17,8 +17,8 @@ class EventController extends Controller
      */
     public function index()
     {
-        $events = Event::whereNull('deleted_at')
-            ->filter()->paginate(10);
+        $events = Event::whereNull('deleted_at')->filter()->paginate(5);
+
         // dd($events);
         return view('events.index', compact('events'));
     }

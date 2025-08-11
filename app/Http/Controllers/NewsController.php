@@ -6,6 +6,7 @@ use App\Models\News;
 use Illuminate\Http\Request;
 use App\Services\FileService;
 use App\Http\Requests\NewsRequest;
+use App\Models\DepartmentType;
 use App\Models\NewsContent;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -29,8 +30,10 @@ class NewsController extends Controller
             default:
                 $news = News::with('newsContents')->whereNull('deleted_at')->filter()->paginate(5);
         }
-        
-        return view('news.index', compact('news'));
+
+        $departmentTypes = DepartmentType::with('departments')->get();
+
+        return view('news.index', compact('news', 'departmentTypes'));
     }
 
     /**
