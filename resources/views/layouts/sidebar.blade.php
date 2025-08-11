@@ -16,34 +16,41 @@
             </a>
         </li>
 
-        <li class="nav-item {{ (isset($elementActive) && $elementActive == 'academic-calendars') ? 'active' : '' }}">
+        {{-- @if (auth()->user()->role == 'user') --}}
+            <li class="nav-item {{ (isset($elementActive) && $elementActive == 'academic-calendars') ? 'active' : '' }}">
             <a class="nav-link" href="{{ route('academic-calendars.index') }}">
                 {{-- <i class="icon-grid menu-icon"></i> --}}
                 <i class="fa-regular fa-newspaper fa-2x menu-icon"></i>
                 <span class="menu-title">Academic Calendar</span>
             </a>
         </li>
+        {{-- @endif --}}
 
+
+        {{-- @if (auth()->user()->role == 'user') --}}
         <li class="nav-item {{ (isset($elementActive) && $elementActive == 'events') ? 'active' : '' }} }}">
             <a class="nav-link" href="{{ route('events.index') }}">
                 <i class="fa-regular fa-calendar menu-icon"></i>
                 <span class="menu-title">Events</span>
             </a>
         </li>
+        {{-- @endif --}}
 
-        <li class="nav-item {{ isset($elementActive) && $elementActive == 'department-types' ? 'active': '' }}">
-            <a class="nav-link" href="{{ route('department-types.index') }}">
-                <i class="icon-grid menu-icon"></i>
-                <span class="menu-title">Department Types</span>
-            </a>
-        </li>
+        @if(auth()->user()->role == 'admin')
+            <li class="nav-item {{ isset($elementActive) && $elementActive == 'department-types' ? 'active': '' }}">
+                <a class="nav-link" href="{{ route('department-types.index') }}">
+                    <i class="icon-grid menu-icon"></i>
+                    <span class="menu-title">Department Types</span>
+                </a>
+            </li>
 
-        <li class="nav-item {{ isset($elementActive) && $elementActive == 'departments' ? 'active': '' }}">
-            <a class="nav-link" href="{{ route('departments.index') }}">
-                <i class="fa-regular fa-building menu-icon"></i>
-                <span class="menu-title">Departments</span>
-            </a>
-        </li>
+            <li class="nav-item {{ isset($elementActive) && $elementActive == 'departments' ? 'active': '' }}">
+                <a class="nav-link" href="{{ route('departments.index') }}">
+                    <i class="fa-regular fa-building menu-icon"></i>
+                    <span class="menu-title">Departments</span>
+                </a>
+            </li>
+        @endif
 
         <li class="nav-item {{ isset($elementActive) && $elementActive == 'profiles' ? 'active': '' }}">
             <a class="nav-link" href="{{ route('profiles.show', auth()->user()->id) }}">
