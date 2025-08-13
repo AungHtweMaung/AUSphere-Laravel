@@ -1,0 +1,10 @@
+/* events card hover effect */
+.events-card {
+    transition: transform 1s;
+}
+
+.events-card:hover {
+    transform: scale(1.03);
+    /* background-color: black; */
+    border: 2px solid var(--bs-primary);
+}

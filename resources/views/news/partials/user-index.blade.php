@@ -42,4 +42,6 @@
                 {{ $news->appends(request()->query())->links() }}
             </div>
         </div>
+    </div>
+    @include('news.partials.footer')
     @endsection
