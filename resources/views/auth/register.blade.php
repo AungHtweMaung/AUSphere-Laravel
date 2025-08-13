@@ -1,7 +1,9 @@
 <x-guest-layout>
     <x-authentication-card>
         <x-slot name="logo">
-            <x-authentication-card-logo />
+            {{-- <x-authentication-card-logo /> --}}
+            <img src="{{ asset('src/assets/images/uni_logo1.png') }}" width="130px" height="130px" alt="">
+
         </x-slot>
 
         <x-validation-errors class="mb-4" />
