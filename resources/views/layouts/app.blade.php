@@ -47,7 +47,7 @@
     </div>
 
 {{-- navbar --}}
-<div class="container-fluid page-body-wrapper">
+    <div class="container-fluid page-body-wrapper">
         @include('layouts.navbar')
         {{-- sidebar --}}
         @include('layouts.sidebar')
@@ -99,6 +99,8 @@
     {{-- <script src="{{ asset('src/assets/js/pusher.js') }}"></script> --}}
     {{-- <script src="{{ asset('src/assets/js/pusher.min.js') }}"></script> --}}
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pusher/7.0.3/pusher.min.js"></script>
+
     <script src="{{ asset('js/custom.js') }}"></script>
 
     {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/pusher/7.0.3/pusher.min.js"></script> --}}
@@ -114,6 +116,23 @@
     {{-- <script src="https://js.pusher.com/8.4.0/pusher.min.js"></script> --}}
 
     @stack('js')
+
+
+    {{-- <script>
+
+    // Enable pusher logging - don't include this in production
+    Pusher.logToConsole = true;
+
+    var pusher = new Pusher('4e8eae8a55fa0aa4492d', {
+      cluster: 'ap1'
+    });
+
+    var channel = pusher.subscribe('my-channel-test');
+    channel.bind('my-event-test', function(data) {
+      alert(JSON.stringify(data));
+    });
+  </script> --}}
+
 
 </body>
 
