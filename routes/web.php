@@ -12,7 +12,6 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-
 Route::redirect('/', 'login');
 
 Route::middleware(['auth:sanctum', config('jetstream.auth_session'),'verified',])->group(function () {
@@ -39,6 +38,15 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'),'verified',]
         // acamedic calendars
         Route::resource('/academic-calendars', App\Http\Controllers\AcademicCalendarController::class);
 
+        // chats
+        Route::get('/chats', [App\Http\Controllers\ChatController::class, 'index'])->name('chats.index');
+        Route::post('/chats/mark-as-read', [App\Http\Controllers\ChatController::class, 'markAsRead'])->name('chats.mark-as-read');
+        Route::post('/chat/opened', [App\Http\Controllers\ChatController::class, 'conversationOpened'])->name('chat.opened');
+
+
+        // Route for sending messages
+        Route::get('/fetch-messages', [App\Http\Controllers\ChatController::class, 'fetchMessages'])->name('fetch.messages');
+        Route::post('/send-message', [App\Http\Controllers\ChatController::class, 'sendMessage'])->name('send.message');
 
         // department types
         Route::resource('/department-types', App\Http\Controllers\DepartmentTypeController::class);
