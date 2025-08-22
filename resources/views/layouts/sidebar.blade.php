@@ -16,6 +16,14 @@
             </a>
         </li>
 
+        <li class="nav-item {{ (isset($elementActive) && $elementActive == 'chats') ? 'active' : '' }} }}">
+            <a class="nav-link" href="{{ route('chats.index') }}">
+                {{-- <i class="fa-regular fa-comment menu-icon"></i> --}}
+                <i class="fa-regular fa-message menu-icon"></i>
+                <span class="menu-title">Conversation</span>
+            </a>
+        </li>
+
         {{-- @if (auth()->user()->role == 'user') --}}
             <li class="nav-item {{ (isset($elementActive) && $elementActive == 'academic-calendars') ? 'active' : '' }}">
             <a class="nav-link" href="{{ route('academic-calendars.index') }}">

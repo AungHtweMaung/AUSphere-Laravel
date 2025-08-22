@@ -1,5 +1,5 @@
 @extends('layouts.app', [
-    'elementActive' => 'chat',
+    'elementActive' => 'chats',
 ])
 @section('css')
     <style>
@@ -70,8 +70,13 @@
             border: 1px solid #ddd;
             border-radius: 5px;
             background-color: #ffffff;
-            ;
             margin-bottom: 10px;
+        }
+
+        .no-message-conversation {
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
         .chat-message.sender {
@@ -274,9 +279,6 @@
         </div>
         <!-- content-wrapper ends -->
     </div>
-
-
-
 @endsection
 
 
@@ -305,10 +307,8 @@
             //     `{{ asset('storage/') }}/${data.sender_image}` :
             //     `{{ asset('src/assets/images/default-user-image.svg') }}`; // Default image
 
-            let messageTime = data.time || new Date().toLocaleTimeString([], { // Use `time` from the payload
-                hour: '2-digit',
-                minute: '2-digit'
-            });
+            let messageTime = data.time;
+
 
             // Check if the logged-in user is the receiver before displaying the message
             if (data.receiver_id == receiverId) {
@@ -338,9 +338,23 @@
     <script>
         $('.chat-item').on('click', function() {
             $('.chat-area').removeClass('d-none');
+
+
+            let otherUserId = $(this).find('.id').text(); // the user you are chatting with
+            $.ajax({
+                url: '{{ route("chat.opened") }}',
+                method: 'POST',
+                data: {
+                    other_user_id: otherUserId, // conversation partner
+                    _token: '{{ csrf_token() }}'
+                }
+            });
+
+
             let profileImage = $(this).find('.profile_img').attr('src');
             let profileName = $(this).find('.profile_name').text();
             let receiverId = $(this).find('.id').text();
+
             $('#receiver_id').val(receiverId);
             $('#chat_img').attr('src', profileImage);
             $('#chat_name').text(profileName);
@@ -353,41 +367,79 @@
                 },
                 success: function(response) {
                     $('#chatMessageContainer').empty();
+                    $('.chat-message-container').removeClass('no-message-conversation');
 
-                    response.messages.forEach(function(message) {
-                        let isSender = message.sender_id == loggedUserInfo.id;
-                        // let userAvatar = isSender ? '{{  auth()->user()->picture ? asset("storage/" . auth()->user()->picture) : asset("src/assets/images/default-user-image.svg") }}' : profileImage;
-                        let userAvatar = '{{ asset("src/assets/images/default-user-image.svg") }}';
-                        // console.log(userAvatar);
-                        let userName = isSender ? '{{ auth()->user()->name }}' : profileName;
+                    if (response.messages.length != 0) {
+                        let unreadIds = [];
 
-                        let messageTime = new Date(message.created_at).toLocaleTimeString([], {
-                            hour: '2-digit',
-                            minute: '2-digit'
+                        response.messages.forEach(function(message) {
+                            let isSender = message.sender_id == loggedUserInfo.id;
+                            let isReceiver = message.receiver_id == loggedUserInfo.id;
+
+                            let userAvatar =
+                                '{{ asset('src/assets/images/default-user-image.svg') }}';
+                            let userName = isSender ? '{{ auth()->user()->name }}' :
+                                profileName;
+
+                            let messageTime = new Date(message.created_at).toLocaleTimeString(
+                            [], {
+                                    hour: '2-digit',
+                                    minute: '2-digit'
+                                });
+
+                            let messageHtml = `
+                        <div class="chat-message ${isSender ? 'sender' : 'receiver'}">
+                            <div class="message-avatar">
+                                <img src="${userAvatar}" class="rounded-circle avatar" alt="User Avatar">
+                            </div>
+                            <div class="message-content">
+                                <p class="text-start"><strong>${userName}:</strong> ${message.message}</p>
+                                <div class="timestamp">${messageTime}</div>
+                            </div>
+                        </div>`;
+
+                            document.getElementById('chatMessageContainer').insertAdjacentHTML(
+                                'beforeend', messageHtml);
+
+                            // Mark as read only if this message was sent to the logged-in user
+                            if (!isSender && isReceiver) {
+                                unreadIds.push(message.id);
+                            }
                         });
 
-                        let messageHtml = `
-                            <div class="chat-message ${isSender ? 'sender' : 'receiver'}">
-                                <div class="message-avatar">
-                                    <img src="${userAvatar}" class="rounded-circle avatar" alt="User Avatar">
-                                </div>
-                                <div class="message-content">
-                                    <p class="text-start"><strong>${userName}:</strong> ${message.message}</p>
-                                    <div class="timestamp">${messageTime}</div>
-                                </div>
-                            </div>`;
-                    document.getElementById('chatMessageContainer').insertAdjacentHTML('beforeend', messageHtml);
-                });
+                        $('#chatMessageContainer').scrollTop($('#chatMessageContainer')[0]
+                        .scrollHeight);
 
-                // $('#chatMessageContainer').append(messageHtml);
-                        // Scroll to the bottom of the chat container
-                        $('#chatMessageContainer').scrollTop($('#chatMessageContainer')[0].scrollHeight);
+                        // Send AJAX to mark messages as read
+                        if (unreadIds.length > 0) {
+                            $.ajax({
+                                url: '{{ route('chats.mark-as-read') }}',
+                                method: 'POST',
+                                data: {
+                                    chat_ids: unreadIds,
+                                    _token: '{{ csrf_token() }}'
+                                },
+                                success: function(res) {
+                                    console.log('Messages marked as read');
+                                },
+                                error: function(err) {
+                                    console.error('Error marking messages as read:', err);
+                                }
+                            });
+                        }
+
+                    } else {
+                        $('.chat-message-container').addClass('no-message-conversation');
+                        let messageHtml =
+                            `<p class="text-bold fs-3" id="no-messages">There is no messages</p>`;
+                        document.getElementById('chatMessageContainer').insertAdjacentHTML('beforeend',
+                            messageHtml);
+                    }
                 },
                 error: function(xhr, status, error) {
                     console.error('Error fetching messages:', error);
                 }
             });
-
         });
     </script>
 
@@ -423,12 +475,17 @@
                 },
                 success: function(response) {
                     // console.log(response);
+                    const noMessages = document.getElementById('no-messages');
+                    if (noMessages) {
+                        noMessages.remove(); // removes the <p> from DOM
+                    }
+                    $('.chat-message-container').removeClass('no-message-conversation');
                     if (response.success) {
                         toastr.success(response.message, "Success");
                         $('#messageInput').val(''); // Clear the input
-                        // let userAvatar = '{{ auth()->user()->picture ? asset("storage/" . auth()->user()->picture) : asset("src/assets/images/default-user-image.svg") }}';
-                        let userAvatar = '{{ asset("src/assets/images/default-user-image.svg") }}';
-                        // let userAvatar = '{{ asset("src/assets/images/default-user-image.svg") }}';
+                        // let userAvatar = '{{ auth()->user()->picture ? asset('storage/' . auth()->user()->picture) : asset('src/assets/images/default-user-image.svg') }}';
+                        let userAvatar = '{{ asset('src/assets/images/default-user-image.svg') }}';
+                        // let userAvatar = '{{ asset('src/assets/images/default-user-image.svg') }}';
                         let userName = '{{ auth()->user()->name }}';
 
                         let messageTime = new Date().toLocaleTimeString([], {
@@ -446,9 +503,10 @@
                                     <div class="timestamp">${messageTime}</div>
                                 </div>
                             </div>`;
-                    // console.log(messageHtml);
+                        // console.log(messageHtml);
 
-                        document.getElementById('chatMessageContainer').insertAdjacentHTML('beforeend', messageHtml);
+                        document.getElementById('chatMessageContainer').insertAdjacentHTML('beforeend',
+                            messageHtml);
 
                         // Scroll to the bottom of the chat container after sending a message
                         $('#chatMessageContainer').scrollTop($('#chatMessageContainer')[0]

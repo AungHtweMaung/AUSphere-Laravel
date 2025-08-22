@@ -22,7 +22,7 @@ if (!function_exists('sendChatNotificationMail')) {
         ];
 
         try {
-            Mail::to($receiverEmail)->queue(new ChatNotificationMail($details));
+            Mail::to($receiverEmail)->send(new ChatNotificationMail($details));
         } catch (\Exception $e) {
             logger()->error('Error sending chat notification email: ' . $e->getMessage());
             // return "Failed to send chat notification email.";

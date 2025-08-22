@@ -21,7 +21,6 @@ class LikeController extends Controller
             $like_count = $social_post->likes()->count();
             return response()->json([
                 'like_count' => $like_count,
-                'liked' => false,
             ]);
 
         } else {
@@ -34,4 +33,4 @@ class LikeController extends Controller
             ]);
         }
     }
-}
+} 
