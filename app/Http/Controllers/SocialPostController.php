@@ -64,6 +64,17 @@ class SocialPostController extends Controller
             'comments'
         ]);
 
+        // Mark unread notifications as read for the post owner
+        if (auth()->check() && auth()->id() == $social_post->user->id) {
+            auth()->user()->unreadNotifications()
+                ->where('type', 'App\Notifications\CommentNotification')
+                ->where('data->post_id', $social_post->id)
+                ->get()
+                ->each(function ($notif) {
+                    $notif->markAsRead();
+                });
+        }
+
         // dd($social_post->comments);
         // This method can be used to show a specific social post
         return view('social-posts.show', compact('user', 'social_post'));

@@ -122,6 +122,74 @@ $(document).ready(function () {
 
     });
 
+    $('.noti-icon').on('click', function (e) {
+        e.preventDefault();
+
+        loadNotifications(); // you can wrap the above AJAX in a function called loadNotifications()
+    });
+
+    // Optional: mark notification as read when clicked
+    $(document).on('click', '.preview-item', function () {
+        let notificationId = $(this).data('id');
+
+        $.ajax({
+            url: '/notifications/mark-as-read', // or window.Laravel.markAsReadUrl
+            type: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            data: { id: notificationId },
+            success: function () {
+                // Optionally remove the notification from the list or refresh
+                loadNotifications(); // you can wrap the above AJAX in a function called loadNotifications()
+            }
+        });
+    });
+
+
+    function loadNotifications() {
+        $.ajax({
+            url: '/notifications/unread', // You can also use window.Laravel.unreadNotificationsUrl if passed via @json
+            type: 'GET',
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') // Laravel CSRF support
+            },
+            success: function (response) {
+                let notifications = response.latestNotiCount;
+
+                let html = '';
+
+                $allNotiCount = response.allNotiCount;
+                if ($allNotiCount > 0) {
+                    $('#notification-count').text($allNotiCount).show();
+                } else {
+                    $('#notification-count').hide();
+                }
+
+                if (notifications.length === 0) {
+                    html = '<p class="dropdown-item">No new notifications</p>';
+                } else {
+                    notifications.forEach(function (noti) {
+                        html += `
+                        <a href="${noti.data.url || '#'}" class="dropdown-item preview-item" data-id="${noti.id}">
+                            <div class="preview-item-content">
+                                <p class="preview-subject mb-1">${noti.data.message}</p>
+                                <p class="text-muted ellipsis mb-0">${new Date(noti.created_at).toLocaleString()}</p>
+                            </div>
+                        </a>
+                    `;
+                    });
+                }
+
+                $('#noti_list').html(html);
+            },
+            error: function (xhr) {
+                console.log('Error fetching notifications', xhr);
+            }
+        });
+    }
+
+
 
 
     // // store, update form submit

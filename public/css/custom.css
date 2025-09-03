@@ -155,3 +155,16 @@ a {
 .note-modal-footer {
     height: 80px;
 }
+
+/* dropdown noti width */
+.navbar .navbar-menu-wrapper .navbar-nav .nav-item.dropdown .navbar-dropdown
+{
+    min-width: 400px;
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+/* noti bell */
+.noti-icon:hover {
+    cursor: pointer;
+}
