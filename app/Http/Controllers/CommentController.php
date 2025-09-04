@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\CommentRequest;
 use App\Models\SocialPost;
 use Illuminate\Http\Request;
+use App\Http\Requests\CommentRequest;
+use App\Notifications\CommentNotification;
 
 class CommentController extends Controller
 {
@@ -14,6 +15,18 @@ class CommentController extends Controller
             'user_id' => auth()->id(),
             'content' => $request->input('content'),
         ]);
+
+        // send notification to post owner if the commenter is not the post owner when commenting
+        if ($social_post->user->id !== auth()->id()) {
+            $social_post->user->notify(
+                new CommentNotification(
+                    auth()->id(),
+                    $social_post->user->id,
+                    auth()->user()->name,  // commenter name
+                    $social_post->id,
+                )
+            );
+        }
 
         $comments = $social_post->comments()->with('user')->get();
 

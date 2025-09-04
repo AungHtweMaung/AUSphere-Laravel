@@ -18,12 +18,15 @@ class SendMailWhenUserIsOfflineNotification implements ShouldQueue
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     protected $receiverId;
+    protected $sender;
 
     /**
      * Create a new job instance.
      */
-    public function __construct($receiverId)
+    public function __construct($sender, $receiverId)
     {
+        // dd($this->sender);
+        $this->sender = $sender;
         $this->receiverId = $receiverId;
     }
 
@@ -49,7 +52,6 @@ class SendMailWhenUserIsOfflineNotification implements ShouldQueue
         // Fetch unread messages
         $messages = Chat::where('receiver_id', $this->receiverId)
             ->where('is_read', false)
-            ->latest()
             ->take(10) // adjust as needed
             ->get();
 
@@ -59,10 +61,17 @@ class SendMailWhenUserIsOfflineNotification implements ShouldQueue
         $messageText = $messages->pluck('message')->implode("\n");
 
         // Send email (example)
-        Mail::raw($messageText, function ($mail) use ($receiver) {
-            $mail->to($receiver->email)
-                ->subject('You have new chat messages');
-        });
+        // Mail::raw($messageText, function ($mail) use ($receiver) {
+        //     $mail->to($receiver->email)
+        //         ->subject('You have new chat messages');
+        // });
+
+        // Use Mailable instead of raw mail for better formatting
+        Mail::to($receiver->email)->queue(new ChatNotificationMail([
+            'subject' => "New chat message from {$this->sender->name}",
+            'sender' => $this->sender->name,
+            'message' => $messageText,
+        ]));
 
         // Optionally mark messages as read
         Chat::whereIn('id', $messages->pluck('id'))

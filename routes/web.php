@@ -48,6 +48,10 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'),'verified',]
         Route::get('/fetch-messages', [App\Http\Controllers\ChatController::class, 'fetchMessages'])->name('fetch.messages');
         Route::post('/send-message', [App\Http\Controllers\ChatController::class, 'sendMessage'])->name('send.message');
 
+        // get noti
+        Route::get('/notifications/unread', [App\Http\Controllers\NotificationController::class, 'index'])->name('notifications.index');
+        Route::post('/notifications/mark-as-read', [App\Http\Controllers\NotificationController::class, 'markAsread']);
+
         // department types
         Route::resource('/department-types', App\Http\Controllers\DepartmentTypeController::class);
 
@@ -61,6 +65,7 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'),'verified',]
 
         // social posts
         Route::get('/social-posts', [App\Http\Controllers\SocialPostController::class, 'index'])->name('social-posts.index');
+
 
         Route::get('/users/{user}/social-posts/create/{social_post?}', [App\Http\Controllers\SocialPostController::class, 'create'])->name('social-posts.create');
         // Route::get('/users/{user}/social-posts', [App\Http\Controllers\SocialPostController::class, 'index'])->name('social-posts.index');

@@ -58,19 +58,19 @@ class ChatController extends Controller
         ]);
 
         // DEBUG: Check cache key
-        $conversationCacheKey = "conversation_opened_{$receiverId}_{$sender->id}";
-        \Log::info('Checking cache key: ' . $conversationCacheKey);
-        \Log::info('Cache exists: ' . (Cache::has($conversationCacheKey) ? 'YES' : 'NO'));
+        // $conversationCacheKey = "conversation_opened_{$receiverId}_{$sender->id}";
+        // \Log::info('Checking cache key: ' . $conversationCacheKey);
+        // \Log::info('Cache exists: ' . (Cache::has($conversationCacheKey) ? 'YES' : 'NO'));
 
 
 
         // FIX: Check if RECEIVER is currently viewing THIS SENDER's conversation
         // Format: "conversation_opened_{receiver_id}_{sender_id}"
         $conversationCacheKey = "conversation_opened_{$receiverId}_{$sender->id}";
-        Log::info('Check cache key ' . $conversationCacheKey);
+        // Log::info('Check cache key ' . $conversationCacheKey);
 
         if (Cache::has($conversationCacheKey)) {
-            Log::info('Marking message as read immediately');
+            // Log::info('Marking message as read immediately');
 
             // Use Query Builder instead of Eloquent to bypass any model logic
             $updated = DB::table('chats')
@@ -78,7 +78,7 @@ class ChatController extends Controller
                 ->update(['is_read' => 1]);
 
             // Refresh the model
-            // $chat->refresh();
+            $chat->refresh();
         }
 
         // Fire real-time event
@@ -89,13 +89,13 @@ class ChatController extends Controller
         }
 
         // Schedule offline mail only if receiver is not viewing conversation
-        // $offlineCacheKey = 'offline_mail_' . $receiverId;
-        // if (!Cache::has($offlineCacheKey) && !Cache::has($conversationCacheKey)) {
-        //     SendMailWhenUserIsOfflineNotification::dispatch($receiverId)
-        //         ->delay(now()->addMinutes(3));
+        $offlineCacheKey = 'offline_mail_' . $receiverId;
+        if (!Cache::has($offlineCacheKey) && !Cache::has($conversationCacheKey)) {
+            SendMailWhenUserIsOfflineNotification::dispatch($sender, $receiverId)
+                ->delay(now()->addMinutes(1));
 
-        //     Cache::put($offlineCacheKey, true, now()->addMinutes(3));
-        // }
+            Cache::put($offlineCacheKey, true, now()->addMinutes(1));
+        }
 
         return response()->json([
             'success' => true,

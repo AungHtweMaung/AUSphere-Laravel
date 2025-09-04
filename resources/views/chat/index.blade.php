@@ -312,13 +312,22 @@
 
             // Check if the logged-in user is the receiver before displaying the message
             if (data.receiver_id == receiverId) {
+                let noMessages = document.getElementById('no-messages');
+                if (noMessages) {
+                    // noMessages.style.display = 'none';
+                    noMessages.remove(); // removes the <p> from DOM
+                }
+
+                $('.chat-message-container').removeClass('no-message-conversation');
+
+
                 let messageHtml = `
                     <div class="chat-message receiver">
                         <div class="message-avatar">
                             <img src="${senderImage}" class="rounded-circle avatar" alt="${senderName} Avatar">
                         </div>
                         <div class="message-content">
-                            <p><strong>${senderName}:</strong> ${message}</p>
+                            <p class="text-start"><strong>${senderName}:</strong> ${message}</p>
                             <div class="timestamp">${messageTime}</div>
                         </div>
                     </div>`;
@@ -431,7 +440,7 @@
                     } else {
                         $('.chat-message-container').addClass('no-message-conversation');
                         let messageHtml =
-                            `<p class="text-bold fs-3" id="no-messages">There is no messages</p>`;
+                            `<p class="text-bold fs-3" id="no-messages">There is no message</p>`;
                         document.getElementById('chatMessageContainer').insertAdjacentHTML('beforeend',
                             messageHtml);
                     }
@@ -475,13 +484,15 @@
                 },
                 success: function(response) {
                     // console.log(response);
-                    const noMessages = document.getElementById('no-messages');
+                    let noMessages = document.getElementById('no-messages');
                     if (noMessages) {
+                        // noMessages.style.display = 'none';
                         noMessages.remove(); // removes the <p> from DOM
                     }
+                    // $('#no-messages').css('display', 'none');
                     $('.chat-message-container').removeClass('no-message-conversation');
                     if (response.success) {
-                        toastr.success(response.message, "Success");
+                        // toastr.success(response.message, "Success");
                         $('#messageInput').val(''); // Clear the input
                         // let userAvatar = '{{ auth()->user()->picture ? asset('storage/' . auth()->user()->picture) : asset('src/assets/images/default-user-image.svg') }}';
                         let userAvatar = '{{ asset('src/assets/images/default-user-image.svg') }}';
