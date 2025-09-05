@@ -24,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('acamedic_calendars');
+        Schema::dropIfExists('academic_calendars');
     }
 };
