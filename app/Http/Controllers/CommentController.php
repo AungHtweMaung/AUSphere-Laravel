@@ -14,6 +14,7 @@ class CommentController extends Controller
         $social_post->comments()->create([
             'user_id' => auth()->id(),
             'content' => $request->input('content'),
+            'parent_comment_id' => $request->input('parent_comment_id'), // add parent_comment_id support
         ]);
 
         // send notification to post owner if the commenter is not the post owner when commenting
@@ -28,7 +29,7 @@ class CommentController extends Controller
             );
         }
 
-        $comments = $social_post->comments()->with('user')->get();
+        $comments = $social_post->comments()->with(['user', 'replies.user'])->get();
 
         return response()->json([
             'success' => 'Comment added successfully.',

@@ -23,6 +23,7 @@ class CommentRequest extends FormRequest
     {
         return [
             'content' => 'required',
+            'parent_comment_id' => 'nullable|exists:social_posts_comments,id',
         ];
     }
 }

@@ -60,8 +60,7 @@ class SocialPostController extends Controller
     public function show(User $user, SocialPost $social_post)
     {
         $social_post->load([
-            'comments.user:id,name',
-            'comments'
+            'comments.user:id,name'
         ]);
 
         // Mark unread notifications as read for the post owner

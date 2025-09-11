@@ -26,7 +26,7 @@ class SocialPost extends Model
 
     public function comments()
     {
-        return $this->hasMany(Comment::class, 'social_post_id', 'id');
+        return $this->hasMany(Comment::class, 'social_post_id', 'id')->with('replies');
     }
 
     public function images()
