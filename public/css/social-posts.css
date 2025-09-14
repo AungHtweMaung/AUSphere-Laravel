@@ -20,4 +20,65 @@
     cursor: pointer;
 }
 
+/* Reply functionality styles */
+.reply-btn {
+    color: #007bff;
+    text-decoration: none;
+    font-size: 0.9em;
+    margin-top: 5px;
+    display: inline-block;
+}
+
+.reply-btn:hover {
+    color: #0056b3;
+    text-decoration: underline;
+}
+
+.reply-form {
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 0.375rem;
+    padding: 1rem;
+    margin-top: 0.5rem;
+}
+
+.reply-form textarea {
+    resize: vertical;
+    min-height: 60px;
+}
+
+.cancel-reply-btn {
+    background-color: #6c757d;
+    border-color: #6c757d;
+}
+
+.cancel-reply-btn:hover {
+    background-color: #545b62;
+    border-color: #4e555b;
+}
+
+/* Nested replies styling */
+#comments-body ul {
+    margin-left: 2rem;
+}
+
+#comments-body li {
+    position: relative;
+}
+
+#comments-body li::before {
+    content: '';
+    position: absolute;
+    left: -1rem;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background-color: #dee2e6;
+    display: none;
+}
+
+#comments-body ul li::before {
+    display: block;
+}
+
 

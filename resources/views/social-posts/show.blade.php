@@ -50,8 +50,8 @@
                                 <form action="{{ route('social-posts.comments.create', $social_post->id) }}" method="POST" class="comment-store">
                                     @csrf
                                     <div class="mb-3">
-                                        <label for="comment" class="form-label">Add a Comment</label>
-                                        <textarea name="comment" id="comment" class="form-control" rows="3" placeholder="Write your comment..."
+                                        <label for="content" class="form-label">Add a Comment</label>
+                                        <textarea name="content" id="content" class="form-control" rows="3" placeholder="Write your comment..."
                                             required></textarea>
                                     </div>
                                     <button type="submit" class="btn btn-primary">Post Comment</button>
@@ -66,18 +66,44 @@
                         <div class="card-body">
                                 <h5 class="mb-3">Comments (<span class="comments-count">{{ $social_post->comments->count() }}</span>)</h5>
                                 <ul class="list-unstyled" id="comments-body">
-                                @foreach($social_post->comments as $comment)
-                                    <li class="mb-4 border-bottom pb-2">
-                                        <div class="d-flex align-items-center mb-1">
-                                            <img src="{{ asset('src/assets/images/default-user-image.svg') }}" width="24px" alt="" class="me-2">
-                                            <strong>{{ $comment->user->name }}</strong>
-                                            {{-- <span class="text-muted ms-2" style="font-size: 0.9em;">{{ $comment->created_at->diffForHumans() }}</span> --}}
-                                        </div>
-                                        <div>
-                                            {{ $comment->content }}
-                                        </div>
-                                    </li>
-                                @endforeach
+                                @php
+                                    if (!function_exists('renderComments')) {
+                                        function renderComments($comments) {
+                                            foreach ($comments as $comment) {
+                                                echo '<li class="mb-4 border-bottom pb-2">';
+                                                echo '<div class="d-flex align-items-center mb-1">';
+                                                echo '<img src="' . asset("src/assets/images/default-user-image.svg") . '" width="24px" alt="" class="me-2">';
+                                                echo '<strong>' . e($comment->user->name) . '</strong>';
+                                                // echo '<span class="text-muted ms-2" style="font-size: 0.9em;">' . $comment->created_at->diffForHumans() . '</span>';
+                                                echo '</div>';
+                                                echo '<div>' . e($comment->content) . '</div>';
+                                                // Reply button
+                                                echo '<a href="javascript:void(0);" class="reply-btn" data-comment-id="' . $comment->id . '">Reply</a>';
+                                                // Reply form (hidden by default)
+                                                echo '<form action="' . route("social-posts.comments.create", $comment->social_post_id) . '" method="POST" class="reply-form mt-2" data-parent-id="' . $comment->id . '" style="display:none;">';
+                                                echo csrf_field();
+                                                echo '<div class="mb-3">';
+                                                echo '<textarea name="content" class="form-control" rows="2" placeholder="Write your reply..." required></textarea>';
+                                                echo '<input type="hidden" name="parent_comment_id" value="' . $comment->id . '">';
+                                                echo '</div>';
+                                                echo '<button type="submit" class="btn btn-sm btn-primary">Post Reply</button>';
+                                                echo '<button type="button" class="btn btn-sm btn-secondary cancel-reply-btn ms-2 text-white">Cancel</button>';
+                                                echo '</form>';
+                                                // Render replies recursively
+                                                if ($comment->replies && $comment->replies->count() > 0) {
+                                                    // Removed "View Replies" link to show all replies directly
+                                                    echo '<ul class="list-unstyled ms-4 replies-list" data-comment-id="' . $comment->id . '">';
+                                                    renderComments($comment->replies);
+                                                    echo '</ul>';
+                                                }
+                                                echo '</li>';
+                                            }
+                                        }
+                                    }
+                                @endphp
+                                @php
+                                    renderComments($social_post->comments->where('parent_comment_id', null));
+                                @endphp
                             </ul>
                             </div>
                         </div>

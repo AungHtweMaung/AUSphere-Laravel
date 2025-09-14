@@ -15,6 +15,7 @@ class Comment extends Model
         'user_id',
         'social_post_id',
         'content',
+        'parent_comment_id',
     ];
 
     public function user()
@@ -25,5 +26,17 @@ class Comment extends Model
     public function socialPost()
     {
         return $this->belongsTo(SocialPost::class, 'social_post_id', 'id');
+    }
+
+    // parent comment relationship
+    public function parentComment()
+    {
+        return $this->belongsTo(Comment::class, 'parent_comment_id');
+    }
+
+    // child comments relationship
+    public function replies()
+    {
+        return $this->hasMany(Comment::class, 'parent_comment_id')->with(['user', 'replies']);
     }
 }
