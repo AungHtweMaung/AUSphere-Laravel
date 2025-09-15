@@ -122,6 +122,7 @@ $(document).ready(function () {
 
     });
 
+    // for comment notifications
     $('.noti-icon').on('click', function (e) {
         e.preventDefault();
 
@@ -182,6 +183,76 @@ $(document).ready(function () {
                 }
 
                 $('#noti_list').html(html);
+            },
+            error: function (xhr) {
+                console.log('Error fetching notifications', xhr);
+            }
+        });
+    }
+
+
+
+
+
+    $('.chat-noti-icon').on('click', function (e) {
+        e.preventDefault();
+
+        chatLoadNotifications(); // you can wrap the above AJAX in a function called loadNotifications()
+    });
+
+    // Optional: mark notification as read when clicked
+    // $(document).on('click', '.preview-item', function () {
+    //     let notificationId = $(this).data('id');
+
+    //     $.ajax({
+    //         url: '/notifications/mark-as-read', // or window.Laravel.markAsReadUrl
+    //         type: 'POST',
+    //         headers: {
+    //             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    //         },
+    //         data: { id: notificationId },
+    //         success: function () {
+    //             // Optionally remove the notification from the list or refresh
+    //             chatLoadNotifications(); // you can wrap the above AJAX in a function called loadNotifications()
+    //         }
+    //     });
+    // });
+
+
+    function chatLoadNotifications() {
+        $.ajax({
+            url: '/notifications/unread/chat',
+            type: 'GET',
+
+            success: function (response) {
+                let notifications = response.latestChatNotifications;
+                console.log(notifications);
+
+                let html = '';
+
+                $allNotiCount = response.allChatNotiCount;
+                if ($allNotiCount > 0) {
+                    $('#chat-notification-count').text($allNotiCount).show();
+                } else {
+                    $('#chat-notification-count').hide();
+                }
+
+                if (notifications.length === 0) {
+                    html = '<p class="dropdown-item">No new notifications</p>';
+                } else {
+                    notifications.forEach(function (noti) {
+                        html += `
+                        <a href="${noti.data.url || '#'}" class="dropdown-item preview-item" data-id="${noti.id}">
+                            <div class="preview-item-content">
+                                <p class="preview-subject mb-1">${noti.data.message}</p>
+                                <p class="text-muted ellipsis mb-0">${new Date(noti.created_at).toLocaleString()}</p>
+                            </div>
+                        </a>
+                    `;
+                    });
+                }
+
+                $('#chat_noti_list').html(html);
             },
             error: function (xhr) {
                 console.log('Error fetching notifications', xhr);

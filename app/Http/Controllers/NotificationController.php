@@ -10,8 +10,12 @@ class NotificationController extends Controller
     public function index()
     {
         // Fetch notifications for the authenticated user
-        $latestNotiCount = auth()->user()->unreadNotifications()->latest()->get();
-        $allNotiCount = auth()->user()->unreadNotifications()->count();
+        $latestNotiCount = auth()->user()->unreadNotifications()
+            ->where('type', 'App\Notifications\CommentNotification')
+            ->latest()->get();
+        $allNotiCount = auth()->user()->unreadNotifications()
+        ->where('type', 'App\Notifications\CommentNotification')
+        ->count();
 
 
         // Return a view with the notifications
@@ -20,6 +24,24 @@ class NotificationController extends Controller
             'allNotiCount' => $allNotiCount
         ]);
     }
+
+
+    public function getUnreadChatNotifications()
+    {
+        $latestChatNotifications = auth()->user()->unreadNotifications()
+            ->where('type', 'App\Notifications\ChatNotification')
+            ->get();
+
+        $allChatNotiCount = auth()->user()->unreadNotifications()
+            ->where('type', 'App\Notifications\ChatNotification')
+            ->count();
+
+        return response()->json([
+            'latestChatNotifications' => $latestChatNotifications,
+            'allChatNotiCount' => $allChatNotiCount
+        ]);
+    }
+
 
     public function markAsread(Request $request)
     {

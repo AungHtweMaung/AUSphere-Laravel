@@ -118,7 +118,6 @@
                 cluster: '{{ env('PUSHER_APP_CLUSTER') }}',
                 encrypted: true,
                 forceTLS: true,
-
             });
 
             var channel = pusher.subscribe('my-channel-test.' + user.id);
@@ -126,15 +125,36 @@
             channel.bind('comment-notification', function(data) {
                 var badge = document.getElementById('notification-count');
 
-                var notiCount = parseInt(badge.innerText) || 0;
-                notiCount++;
-                badge.innerText = notiCount;
+                if (badge) {
+                    var notiCount = parseInt(badge.innerText) || 0;
+                    notiCount++;
+                    badge.innerText = notiCount;
 
-                // remove 'd-none' class to show badge
-                badge.classList.remove('d-none');
-                badge.classList.add('d-block'); // optional for Bootstrap visibility
+                    // remove 'd-none' class to show badge
+                    badge.classList.remove('d-none');
+                    badge.classList.add('d-block'); // optional for Bootstrap visibility
+                }
 
                 // console.log('New notification:', data.message);
+            });
+
+            var chatChannel = pusher.subscribe('my-channel-test.' + user.id);
+
+            chatChannel.bind('chat-notification', function(data) {
+                console.log('Chat notification received', data);
+                var chatBadge = document.getElementById('chat-notification-count');
+
+                if (chatBadge) {
+                    var chatNotiCount = parseInt(chatBadge.innerText) || 0;
+                    chatNotiCount++;
+                    chatBadge.innerText = chatNotiCount;
+
+                    // remove 'd-none' class to show chatBadge
+                    chatBadge.classList.remove('d-none');
+                    chatBadge.classList.add('d-block'); // optional for Bootstrap visibility
+                }
+
+                // console.log('New chat notification:', data.message);
             });
         @endif
     </script>
