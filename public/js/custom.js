@@ -242,7 +242,7 @@ $(document).ready(function () {
                 } else {
                     notifications.forEach(function (noti) {
                         html += `
-                        <a href="${noti.data.url || '#'}" class="dropdown-item preview-item" data-id="${noti.id}">
+                        <a href="${noti.data.url || '#'}" class="dropdown-item preview-item chat-notification" data-id="${noti.id}" data-sender-id="${noti.data.sender_id}">
                             <div class="preview-item-content">
                                 <p class="preview-subject mb-1">${noti.data.message}</p>
                                 <p class="text-muted ellipsis mb-0">${new Date(noti.created_at).toLocaleString()}</p>
@@ -259,6 +259,34 @@ $(document).ready(function () {
             }
         });
     }
+
+    // Handle click on chat notification to redirect and mark as read
+    $(document).on('click', '.chat-notification', function(e) {
+        e.preventDefault();
+        let notificationId = $(this).data('id');
+        let senderId = $(this).data('sender-id');
+
+        // Store senderId in localStorage
+        localStorage.setItem('chat_sender_id', senderId);
+
+        // Mark notification as read
+        $.ajax({
+            url: '/notifications/mark-as-read',
+            type: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            data: { id: notificationId },
+            success: function() {
+                // Redirect to chat page
+                window.location.href = '/chats';
+            },
+            error: function() {
+                // Redirect anyway if error
+                window.location.href = '/chats';
+            }
+        });
+    });
 
 
 

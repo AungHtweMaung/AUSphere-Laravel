@@ -132,7 +132,6 @@
 
                     // remove 'd-none' class to show badge
                     badge.classList.remove('d-none');
-                    badge.classList.add('d-block'); // optional for Bootstrap visibility
                 }
 
                 // console.log('New notification:', data.message);
@@ -151,7 +150,6 @@
 
                     // remove 'd-none' class to show chatBadge
                     chatBadge.classList.remove('d-none');
-                    chatBadge.classList.add('d-block'); // optional for Bootstrap visibility
                 }
 
                 // console.log('New chat notification:', data.message);

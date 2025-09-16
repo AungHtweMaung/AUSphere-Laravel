@@ -535,4 +535,20 @@
             });
         });
     </script>
+
+    <script>
+        // Auto-load conversation based on localStorage
+        $(document).ready(function() {
+            const userId = localStorage.getItem('chat_sender_id');
+            if (userId) {
+                localStorage.removeItem('chat_sender_id'); // Remove after use
+                $('.chat-item').each(function() {
+                    if ($(this).find('.id').text() == userId) {
+                        $(this).trigger('click');
+                        return false;
+                    }
+                });
+            }
+        });
+    </script>
 @endpush

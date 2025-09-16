@@ -37,7 +37,7 @@ class ChatNotification extends Notification implements ShouldQueue
             'receiver_id' => $this->receiverId,
             'sender_name' => $this->senderName,
             'message' => $this->senderName . ' sent you a message',
-            'url' => config('app.url') . '/chat',
+            'url' => config('app.url') . '/chats',
         ];
     }
 

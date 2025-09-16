@@ -146,6 +146,14 @@ class ChatController extends Controller
             ->where('is_read', false)
             ->update(['is_read' => 1]);
 
+        // Mark chat notification as read if it exists
+        DB::table('notifications')
+            ->where('type', 'App\Notifications\ChatNotification')
+            ->where('notifiable_id', $receiverId)
+            ->whereNull('read_at')
+            ->where('data->sender_id', $otherUserId)
+            ->update(['read_at' => now()]);
+
         return response()->json(['status' => 'conversation_opened']);
     }
 }
