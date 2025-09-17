@@ -48,9 +48,11 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'),'verified',]
         Route::get('/fetch-messages', [App\Http\Controllers\ChatController::class, 'fetchMessages'])->name('fetch.messages');
         Route::post('/send-message', [App\Http\Controllers\ChatController::class, 'sendMessage'])->name('send.message');
 
-        // get noti
+        // get noti for comment
         Route::get('/notifications/unread', [App\Http\Controllers\NotificationController::class, 'index'])->name('notifications.index');
         Route::post('/notifications/mark-as-read', [App\Http\Controllers\NotificationController::class, 'markAsread']);
+
+        Route::get('/notifications/unread/chat', [App\Http\Controllers\NotificationController::class, 'getUnreadChatNotifications'])->name('notifications.unread.chat');
 
         // department types
         Route::resource('/department-types', App\Http\Controllers\DepartmentTypeController::class);

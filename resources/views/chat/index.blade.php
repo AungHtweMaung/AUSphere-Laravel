@@ -309,9 +309,8 @@
 
             let messageTime = data.time;
 
-
-            // Check if the logged-in user is the receiver before displaying the message
-            if (data.receiver_id == receiverId) {
+            // Check if the logged-in user is the receiver and the sender is the current conversation partner
+            if (data.receiver_id == receiverId && data.sender_id == $('#receiver_id').val()) {
                 let noMessages = document.getElementById('no-messages');
                 if (noMessages) {
                     // noMessages.style.display = 'none';
@@ -319,7 +318,6 @@
                 }
 
                 $('.chat-message-container').removeClass('no-message-conversation');
-
 
                 let messageHtml = `
                     <div class="chat-message receiver">
@@ -535,6 +533,22 @@
                     $('#sendMessageButton').text('Send').attr('disabled', false);
                 }
             });
+        });
+    </script>
+
+    <script>
+        // Auto-load conversation based on localStorage
+        $(document).ready(function() {
+            const userId = localStorage.getItem('chat_sender_id');
+            if (userId) {
+                localStorage.removeItem('chat_sender_id'); // Remove after use
+                $('.chat-item').each(function() {
+                    if ($(this).find('.id').text() == userId) {
+                        $(this).trigger('click');
+                        return false;
+                    }
+                });
+            }
         });
     </script>
 @endpush

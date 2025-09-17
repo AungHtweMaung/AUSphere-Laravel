@@ -28,16 +28,17 @@
             <li class="nav-item dropdown me-3">
                 <a class="nav-link count-indicator noti-icon dropdown-toggle position-relative" id="notificationDropdown"
                     data-bs-toggle="dropdown">
-                    <i class="icon-bell noti-bell mx-0"></i>
+                    <i class="fa-regular fa-bell  menu-icon"></i>
                     <!-- Badge positioned at top-right corner -->
 
-                    {{-- @if (auth()->user()->unreadNotifications->count() > 0) --}}
-                        <span class="badge bg-danger rounded-pill position-absolute top-0 translate-middle
-                            {{  auth()->user()->unreadNotifications()->count() > 0 ? 'd-block' : 'd-none' }}"
-                            id="notification-count" style="margin-left: -15px;">
-                            {{ auth()->user()->unreadNotifications()->count() }}
-                        </span>
-                    {{-- @endif --}}
+                    {{-- Comment notifications badge --}}
+                    @php
+                        $commentNotiCount = auth()->user()->unreadNotifications()->where('type', 'App\Notifications\CommentNotification')->count();
+                    @endphp
+                    <span class="badge bg-danger rounded-pill position-absolute top-0 translate-middle {{ $commentNotiCount > 0 ? '' : 'd-none' }}"
+                        id="notification-count" style="margin-left: -30px;">
+                        {{ $commentNotiCount > 0 ? $commentNotiCount : 0 }}
+                    </span>
                 </a>
                 <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list"
                     aria-labelledby="notificationDropdown">
@@ -46,7 +47,31 @@
 
                     </div>
                 </div>
-        </li>
+            </li>
+            <li class="nav-item dropdown me-3">
+                <a class="nav-link count-indicator chat-noti-icon dropdown-toggle position-relative" id="notificationDropdown"
+                    data-bs-toggle="dropdown">
+                     <i class="fa-regular fa-message"></i>
+                    <!-- Badge positioned at top-right corner -->
+
+                    {{-- Chat notifications badge --}}
+                    @php
+                        $chatNotiCount = auth()->user()->unreadNotifications()->where('type', 'App\Notifications\ChatNotification')->count();
+                    @endphp
+                    <span class="badge bg-danger rounded-pill position-absolute top-0 translate-middle {{ $chatNotiCount > 0 ? '' : 'd-none' }}"
+                        id="chat-notification-count" style="margin-left: -30px;">
+                        {{ $chatNotiCount > 0 ? $chatNotiCount : 0 }}
+                    </span>
+                </a>
+                <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list"
+                    aria-labelledby="notificationDropdown">
+                    <p class="mb-0 font-weight-normal float-left dropdown-header">Message Notifications</p>
+                    <div id="chat_noti_list">
+
+                    </div>
+                </div>
+            </li>
+
         <li class="nav-item nav-profile dropdown">
             <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" id="profileDropdown">
                 <span class="">{{ Auth::user()->name }}</span>

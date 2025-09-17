@@ -12,7 +12,9 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Notification;
 use App\Jobs\SendMailWhenUserIsOfflineNotification;
+use App\Notifications\ChatNotification;
 
 class ChatController extends Controller
 {
@@ -47,6 +49,7 @@ class ChatController extends Controller
     {
         $sender = User::find(auth()->id());
         $receiverId = $request->receiver_id;
+        $receiver = User::find($receiverId);
         $messageText = $request->message;
 
         // Create chat message
@@ -56,13 +59,6 @@ class ChatController extends Controller
             'message' => $messageText,
             'is_read' => false, // default
         ]);
-
-        // DEBUG: Check cache key
-        // $conversationCacheKey = "conversation_opened_{$receiverId}_{$sender->id}";
-        // \Log::info('Checking cache key: ' . $conversationCacheKey);
-        // \Log::info('Cache exists: ' . (Cache::has($conversationCacheKey) ? 'YES' : 'NO'));
-
-
 
         // FIX: Check if RECEIVER is currently viewing THIS SENDER's conversation
         // Format: "conversation_opened_{receiver_id}_{sender_id}"
@@ -81,12 +77,30 @@ class ChatController extends Controller
             $chat->refresh();
         }
 
+        // Check if notification is already sent (unread chat notification from this sender)
+        $existingNotification = DB::table('notifications')
+            ->where('type', 'App\Notifications\ChatNotification')
+            ->where('notifiable_id', $receiverId)
+            ->whereNull('read_at')
+            ->where('data->sender_id', $sender->id)
+            ->exists();
+
+        if (!$existingNotification && $receiver) {
+            // Dispatch notification asynchronously to queue
+            Notification::send($receiver, new ChatNotification($sender->id, $receiverId, $sender->name, $messageText));
+            // logger("Notification sent to user {$receiverId}");
+        } elseif (!$receiver) {
+            logger("Receiver not found for notification: {$receiverId}");
+        }
+
+
         // Fire real-time event
         try {
             event(new MessageSent($messageText, $sender->id, $receiverId, $sender->name, $sender->picture));
         } catch (Exception $e) {
             logger($e->getMessage());
         }
+
 
         // Schedule offline mail only if receiver is not viewing conversation
         $offlineCacheKey = 'offline_mail_' . $receiverId;
@@ -123,13 +137,22 @@ class ChatController extends Controller
         // FIX: Set cache key to indicate RECEIVER is viewing SENDER's conversation
         // Format: "conversation_opened_{receiver_id}_{sender_id}"
         $cacheKey = "conversation_opened_{$receiverId}_{$otherUserId}";
-        Cache::put($cacheKey, true, now()->addMinutes(5));
+        Cache::put($cacheKey, true);
+
 
         // Also mark all existing messages from this sender as read
         Chat::where('sender_id', $otherUserId)
             ->where('receiver_id', $receiverId)
             ->where('is_read', false)
             ->update(['is_read' => 1]);
+
+        // Mark chat notification as read if it exists
+        DB::table('notifications')
+            ->where('type', 'App\Notifications\ChatNotification')
+            ->where('notifiable_id', $receiverId)
+            ->whereNull('read_at')
+            ->where('data->sender_id', $otherUserId)
+            ->update(['read_at' => now()]);
 
         return response()->json(['status' => 'conversation_opened']);
     }
