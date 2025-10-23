@@ -102,13 +102,13 @@ class ChatController extends Controller
         }
 
 
-        // Schedule offline mail only if receiver is not viewing conversation
+        // Schedule offline mail only if receiver is not online
         $offlineCacheKey = 'offline_mail_' . $receiverId;
         if (!Cache::has($offlineCacheKey) && !Cache::has($conversationCacheKey)) {
             SendMailWhenUserIsOfflineNotification::dispatch($sender, $receiverId)
-                ->delay(now()->addMinutes(1));
+                ->delay(now()->addMinutes(5));
 
-            Cache::put($offlineCacheKey, true, now()->addMinutes(1));
+            Cache::put($offlineCacheKey, true, now()->addMinutes(5));
         }
 
         return response()->json([

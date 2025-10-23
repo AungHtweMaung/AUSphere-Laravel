@@ -485,6 +485,11 @@ $(document).ready(function () {
     });
 
     $('.content-summernote').summernote({
+        cleaner: {
+            action: 'paste', // clean when pasting
+            keepHtml: false, // remove all HTML except text
+            keepClasses: false
+        },
         dialogsInBody: true,
         disableDragAndDrop: true,
         height: 300,

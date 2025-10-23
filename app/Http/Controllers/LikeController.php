@@ -14,7 +14,7 @@ class LikeController extends Controller
 
         // Check if the user has already liked the post
         $like = $user->likes()->where('social_post_id', $social_post->id)->first();
-
+        
         if ($like) {
             // Unlike (delete the like)
             $like->delete();
@@ -33,4 +33,4 @@ class LikeController extends Controller
             ]);
         }
     }
-} 
+}

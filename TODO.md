@@ -1,0 +1,2 @@
+- [ ] Update custom.js to add data-user-id to chat notification links and handle click to mark as read and redirect with user_id param
+- [ ] Update chat/index.blade.php to auto-load conversation based on user_id query param

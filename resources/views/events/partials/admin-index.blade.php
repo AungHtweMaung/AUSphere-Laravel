@@ -25,7 +25,7 @@
                         <tr>
                             <td>{{ $num }}</td>
                             <td >{{ Str::limit($item->title, 50, '...') }}</td>
-                            <td class="">{!! Str::limit($item->content, 50, '...') !!}</td>
+                            <td class="">{!! Str::limit(strip_tags($item->content, 50, '...')) !!}</td>
                             <td>
                                 @if($item->image && file_exists(public_path('storage/' . $item->image)))
                                     <img src="{{ asset('storage/' . $item->image) }}" alt="{{ $item->title }}" class="img-thumbnail" style="width: 100px; height: auto;">
